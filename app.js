@@ -8,7 +8,8 @@ const cors = require("cors");
 const redis = require("redis");
 const session = require("express-session");
 const RedisStore = require("connect-redis")(session);
-const redisClient = redis.createClient();
+let redisClient = redis.createClient(6379, 'srv-captain--redis', { password: 'monty123' })
+// const redisClient = redis.createClient();
 const path = require("path");
 
 //Connect To DB
