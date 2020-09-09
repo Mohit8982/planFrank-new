@@ -7,8 +7,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const redis = require("redis");
 const session = require("express-session");
-const RedisStore = require("connect-redis")(session);
-let redisClient = redis.createClient(6379, 'srv-captain--redis', { password: 'monty123' })
+let RedisStore = require('connect-redis')(session);
+let redisClient = redis.createClient(6379, 'srv-captain--rediscache', { password: 'monty123' });
 // const redisClient = redis.createClient();
 const path = require("path");
 
