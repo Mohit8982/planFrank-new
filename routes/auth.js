@@ -37,7 +37,7 @@ router.post("/registerUser", resgitrationVali(), validate, async (req, res)=>{
         });
 
         const saveUser = await register.save();
-        const url = `https://testproject.winguardians.com//auth/verifyUser/${saveUser._id}###${verficationCode}`;
+        const url = `https://testproject.winguardians.com/auth/verifyUser/${saveUser._id}###${verficationCode}`;
         sendMail(name, email, url);
         res.json({
             status : 1,
