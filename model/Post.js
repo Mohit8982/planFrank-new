@@ -6,25 +6,48 @@ const postSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	body: {
+	description: {
 		type: String,
 		required: true,
+	},
+	planTime:{
+		type : String,
+		required : false
+	},
+	planDate:{
+		type : String,
+		required : false
+	},
+	planLocation:{
+		type : String,
+		required : false
 	},
 	photo: {
 		data: Buffer,
 		contenType: String,
+		required : false
 	},
 	postedBy: {
-		type: ObjectId,
-		ref: "User",
+		type : ObjectId,
+		ref : "User",
 	},
-	commentCount: Number,
-	likesCount: Number,
+	planCategory:{
+		type : ObjectId,
+		required: false
+	},
+	commentCount : Number,
+	likesCount : Number,
+	intrestedPeople : [{type: ObjectId}],
+	intrestedCount: Number,
 	likes: [{ type: ObjectId, ref: "User" }],
-	created: {
+	createdAt: {
 		type: String,
 		required: true,
 	},
+	timeStamp:{
+		type: Number,
+		required: true
+	}
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("Plan", postSchema);
