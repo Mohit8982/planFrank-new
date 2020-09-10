@@ -1525,8 +1525,7 @@ main {
 .posty {
 	float: left;
 	width: 100%;
-	border-left: 1px solid #e4e4e4;
-	border-right: 1px solid #e4e4e4;
+	padding: 10px 0px;
 }
 .posty .job-status-bar {
 	border-bottom: 1px solid #e4e4e4;

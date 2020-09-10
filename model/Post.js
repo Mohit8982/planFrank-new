@@ -33,7 +33,7 @@ const postSchema = new mongoose.Schema({
 	},
 	postedBy: {
 		type : ObjectId,
-		ref : "users",
+		ref : "User",
 		required: true
 	},
 	planCategory:{

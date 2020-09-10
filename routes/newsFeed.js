@@ -10,7 +10,8 @@ const { createPlan, validate} = require('../helper/validation');
 router.get("/", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
-        res.render('./newsFeed', {title : "Planfrank Login", userInfo : userInfo})
+        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1});
+        res.render('./newsFeed', {title : "Planfrank Login", userInfo : userInfo, feedData : findIntrest})
     }catch(error){
         res.json({
             status : 0,
@@ -25,15 +26,11 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const userId = userInfo.userId
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-
         ip = '27.5.7.160';
-
         const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
-        
         const locality =  await getLocation(link);
-        const city = locality.body.city; 
-        const state = locality.body.region_name;
-
+        const city = locality.city; 
+        const state = locality.region_name;
         const Post = new createPost({
             title : title,
             description: description,
@@ -48,14 +45,14 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             createdAt : moment().format("DD/MM/YYYY hh:mm a"),
             timeStamp : moment().unix()
         })
-        await Post.save();
+        const postData = await Post.save();
         await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
         await intrest.updateOne({_id : planCategory},{ $inc : { intrest_count : 1 } });
-
-
         res.json({
             status : 1,
-            message : "Success"
+            message : "Success",
+            postData : postData,
+            userInfo :userInfo
         })
     } catch (error) {
         console.log(error)
@@ -119,7 +116,7 @@ async function getLocation(link)
 		.then((response) => {
 			dataProvider = response;
 		});
-
+    
 	return Promise.resolve(dataProvider);
 
 }

@@ -31,9 +31,8 @@ const userSchema = new mongoose.Schema({
 		required: true,
 	},
 	photo: {
-		data: Buffer,
-		contentType: String,
-		required : false
+		type: String,
+		required: true,
 	},
 	about: {
 		type: String,
