@@ -4,7 +4,7 @@ const user = require("../model/User");
 const intrest = require("../model/Plan_category");
 const moment = require("moment");
 const session = require('../helper/session');
-const unirest = require('unirest');
+const request = require('request');
 const { createPlan, validate} = require('../helper/validation');
 
 router.get("/", session, async (req, res)=>{
@@ -31,30 +31,38 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
         let city, state = '';
 
-        unirest('GET', link).end(async function (res) { 
-            if (res.error) throw new Error(res.error); 
-            let data = JSON.parse(JSON.stringify(res));
-            console.log(data)
-            city = data.raw_body.body.city;
-            state = data.raw_body.body.region_name;
-            const Post = new createPost({
-                title : title,
-                description: description,
-                planTime : `${planTimeStart} - ${planTimeEnd}`,
-                planDate : planDate,
-                planLocation : planLocation,
-                postedFrom : `${city}, ${state}`,
-                postedBy : userId,
-                planCategory : planCategory,
-                commentCount: 0,
-                likesCount : 0,
-                createdAt : moment().format("DD/MM/YYYY hh:mm a"),
-                timeStamp : moment().unix()
-            })
-            await Post.save();
-            await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
-            await intrest.updateOne({_id : planCategory},{ $inc : { intrest_count : 1 } });
+       
+        var options = {
+            'method': 'GET',
+            'url': link,
+            'headers': {
+                'Cookie': '__cfduid=d379be94a28ce205e99efd5ad24673a7b1599723116'
+            }
+            };
+            request(options, function (error, response) {
+            if (error) throw new Error(error);
+            console.log(response.body);
         });
+
+
+        const Post = new createPost({
+            title : title,
+            description: description,
+            planTime : `${planTimeStart} - ${planTimeEnd}`,
+            planDate : planDate,
+            planLocation : planLocation,
+            postedFrom : `${city}, ${state}`,
+            postedBy : userId,
+            planCategory : planCategory,
+            commentCount: 0,
+            likesCount : 0,
+            createdAt : moment().format("DD/MM/YYYY hh:mm a"),
+            timeStamp : moment().unix()
+        })
+        await Post.save();
+        await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
+        await intrest.updateOne({_id : planCategory},{ $inc : { intrest_count : 1 } });
+
 
         res.json({
             status : 1,
