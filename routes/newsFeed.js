@@ -29,9 +29,9 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         ip = '27.5.7.160';
 
         const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
-        let city, state = '';
+        let city = ''; 
+        let state = '';
 
-       
         var options = {
             'method': 'GET',
             'url': link,
@@ -44,6 +44,10 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             // console.log(response.body);
             city = response.body.city;
             state = response.body.region_name;
+
+            console.log(response.body.city)
+            console.log(response.body.region_name)
+
         });
 
 
