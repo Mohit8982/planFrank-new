@@ -41,7 +41,9 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             };
             request(options, function (error, response) {
             if (error) throw new Error(error);
-            console.log(response.body);
+            // console.log(response.body);
+            city = response.body.city;
+            state = response.body.region_name;
         });
 
 
