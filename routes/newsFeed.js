@@ -110,7 +110,6 @@ async function getLocation(link)
     let dataProvider;
     await fetch(link, {
 		method: "GET",
-		body: JSON.stringify({ type: type }),
 		headers: {
 			"Content-Type": "application/json",
 			dataType: "json",
