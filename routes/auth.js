@@ -150,7 +150,7 @@ router.get("/verifyUser/:id", async (req, res)=>{
             }
         });
 
-        res.redirect('/', {title : "Planfrank Login", data : "Account Verified Succesfully..."})
+        res.render('./index', {title : "Planfrank Login", data : "Account Verified Succesfully..."})
     } catch (error) {
         res.json({
             status : 0,
