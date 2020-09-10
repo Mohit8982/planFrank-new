@@ -45,8 +45,8 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             city = response.body.city;
             state = response.body.region_name;
 
-            console.log(response.body.city)
-            console.log(response.body.region_name)
+            console.log(JSON.parse(response.body))
+            console.log(response.body)
 
         });
 
