@@ -321,13 +321,11 @@
 			</div>
 		</main>
 
-
-
 		<div class="post-popup pst-pj">
 			<div class="post-project">
 				<h3>Create a Plan!!!</h3>
 				<div class="post-project-fields">
-					<form>
+					<form id="planSubmit" action="/newsFeed/createPlan" method="post">
 						<div class="row">
 							<div class="col-lg-12">
 								<input type="text" name="title" placeholder="Plan Title">
@@ -337,18 +335,34 @@
 							</div>
 							<div class="col-lg-4">
 								<label style="color: #ff546a;padding: 5px;"> Plan Date </label>
-								<input type="date" name="planDate" placeholder="Plan Date" />
+								<input type="date" name="planDate" />
 							</div>
 							<div class="col-lg-4">
 								<label><h4 style="color: #ff546a;padding: 5px;"> Plan Time Start's </h4></label>
-								<input type="time" name="planDate" placeholder="Plan Date" />
+								<input type="time" name="planTimestart" />
 							</div>
 							<div class="col-lg-4">
 								<label> <h4 style="color: #ff546a;padding: 5px;">Plan Time End's</h4> </label>
-								<input type="time" name="planDate" placeholder="Plan Date" />
+								<input type="time" name="planTimeend" />
 							</div>
 							<div class="col-lg-12">
-								<textarea name="address" placeholder="Enter Plan Address"></textarea>
+								<label> <h4 style="color: #ff546a;padding: 5px;">Select Plan Category</h4> </label>
+								<select name="planCategory">
+									<option value="">Select Plan Category</option>
+									<option value="0">Sports</option>
+									<option value="1">Gaming</option>
+									<option value="2">Traking</option>
+								</select>
+							</div>
+							<div class="col-lg-12">
+								<textarea name="planLocation" placeholder="Enter Plan Location"></textarea>
+							</div>
+							<div class="col-lg-12">
+								<div class="checky-sec st2">
+									<div class="fgt-sec">
+										<small id="errText"></small>
+									</div>
+								</div>
 							</div>
 							<div class="col-lg-12">
 								<ul>
@@ -373,6 +387,40 @@
 <script type="text/javascript" src="lib/slick/slick.min.js"></script>
 <script type="text/javascript" src="js/scrollbar.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#planSubmit').submit(function() {
+			$(this).ajaxSubmit({
+				error: function(xhr) {
+					status('Error: ' + xhr.status);
+				},
+				success: function(response) {
+					console.log(response)
+					let status = response.status;
+					if(status == 1)
+					{
+						// window.location.href = response.url;
+					}
+					else if(status == 0)
+					{
+						$("#errText").html(response.message)
+					}
+					else if(status == 3){
+						let errorData = response.errors;
+						let html = ''
+						$.each(errorData, function (key, e) 
+						{
+							html += `<li> ${e} </li>`
+						})
+						$("#errText").html(html)
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>
 
 </body>
 </html>

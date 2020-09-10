@@ -27,8 +27,8 @@
 							<div class="cmp-info">
 								<div class="cm-logo">
 									<img src="/logo.jpg" alt="Planfrank">
-                                    <p>Let's Tag Along !!!</p>
-                                    <p>Find Share & Join the plans that intrest you the most !!!</p>
+                                    <p class="text-center">Let's Tag Along !!!</p>
+                                    <p class="text-center">Find Share & Join the plans that intrest you the most !!!</p>
 								</div>
 							</div>
 						</div>
@@ -54,19 +54,18 @@
 													<i class="la la-lock"></i>
 												</div>
 											</div>
-											
                                             <div class="col-lg-12 no-pdd">
                                                 <div class="checky-sec st2">
                                                     <div class="fgt-sec">
-                                                        <small id="errText"></small>
+														<small id="errText"></small>
                                                     </div>
                                                 </div>
                                             </div>
 											<div class="col-lg-12 no-pdd">
-												<button type="submit" id="sbmtbtn" value="submit">Sign in</button>
+												<button type="submit" value="submit">Sign in</button>
                                             </div>
                                             <div class="col-lg-12 no-pdd">
-												<div class="checky-sec" style="margin-top: -15px;">
+												<div class="checky-sec">
                                                     <a href="#" title="">Forgot Password?</a>
                                                 </div>
                                             </div>
@@ -133,7 +132,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</div>
     <script type="text/javascript" src="js/jquery.min.js"></script>
@@ -153,12 +151,22 @@
                         let status = response.status;
                         if(status == 1)
                         {
-                            $("#signIn").trigger("reset");
+							// $("#signIn").trigger("reset");
+							window.location.href = response.url;
                         }
                         else if(status == 0)
                         {
                             $("#errText").html(response.message)
-                        }
+						}
+						else if(status == 3){
+							let errorData = response.errors;
+							let html = ''
+							$.each(errorData, function (key, e) 
+							{
+								html += `<li> ${e} </li>`
+							})
+							$("#errText").html(html)
+						}
                     }
                 });
                 return false;
@@ -179,12 +187,28 @@
                         else if(status == 0)
                         {
                             $("#regisError").html(response.message)
-                        }
+						}
+						else if(status == 3){
+							let errorData = response.errors;
+							let html = ''
+							$.each(errorData, function (key, e) 
+							{
+								html += `<li> ${e} </li>`
+							})
+							$("#regisError").html(html)
+						}
                     }
                 });
                 return false;
-            });
+			});
 
+			$.ajax({
+				type : "GET",
+				url : "https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7195687,75.8577258&sensor=ture&key=AIzaSyCRhEYo3gT42bJn73I3f9xMFf451l1zIIc",
+				success : function (data){
+					console.log(data)
+				}
+			})
         });
     </script>
 </body>

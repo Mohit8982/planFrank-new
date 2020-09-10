@@ -9,8 +9,10 @@ const redis = require("redis");
 const session = require("express-session");
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient(6379, 'srv-captain--rediscache', { password: 'monty123' });
-// const redisClient = redis.createClient();
+//  const redisClient = redis.createClient();
 const path = require("path");
+
+// http://maps.googleapis.com/maps/api/geocode/json?latlng=22.7195687,75.8577258&sensor=ture&key=AIzaSyCRhEYo3gT42bJn73I3f9xMFf451l1zIIc
 
 //Connect To DB
 dotenv.config();
@@ -61,15 +63,22 @@ app.engine("ejs", engine);
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-const auth = require('./routes/auth')
+const auth = require('./routes/auth');
+const newsFeed = require('./routes/newsFeed');
+
 app.use('/auth', auth);
+app.use('/newsFeed', newsFeed)
 
 app.get("/", async (req, res)=>{
-	res.render('./index', {title : "Planfrank Login"})
-})
 
-app.get("/newsFeed", async (req, res)=>{
-	res.render('./newsFeed', {title : "planFrank"})
+	var ip = req.headers['x-forwarded-for'] ||
+	req.connection.remoteAddress ||
+	req.socket.remoteAddress ||
+	(req.connection.socket ? req.connection.socket.remoteAddress : null);
+
+	console.log(ip)
+
+	res.render('./index', {title : "Planfrank Login"})
 })
 
 const port = process.env.port || 5000;

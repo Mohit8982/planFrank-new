@@ -101,6 +101,13 @@
 
 
 @media (max-width: 768px) {
+	.signin-pop {
+		float: left;
+		width: 100%;
+		background-color: #fff;
+		position: relative;
+		margin-top: 0px;
+	}
 	.login_register {display: none;}
 	.forum-bar ul {float: right;}
 	.comment_box input {width: 84%;}
@@ -135,6 +142,13 @@
 
 @media (max-width: 576px) {
 	.signin-pop {margin-bottom: 40px;}
+	.signin-pop {
+		float: left;
+		width: 100%;
+		background-color: #fff;
+		position: relative;
+		margin-top: 0px;
+	}
 	.login-resources ul li {margin-bottom: 7px;}
 	.logo {width: 100%;text-align: center;}
 	.logo img {float: none;}
@@ -221,7 +235,7 @@
 	.like-com li a {font-size: 12px;}
 	.job_descp h3 {font-size: 16px;}
 	.pf-gallery ul li {padding: 3px;}
-	.checky-sec > a {float: left;width: 100%;margin-top: 10px;padding-left: 20px;}
+	/* .checky-sec > a {float: left;width: 100%;margin-top: 10px;padding-left: 20px;} */
 	.checky-sec.st2 small {width: 85%;}
 	.quest-tags li {float: left;width: 100%;margin-bottom: 15px;}
 	.quest-tags li:last-child {margin-bottom: 0;}
@@ -234,8 +248,15 @@
 	.searchtitle h2 {padding-bottom: 30px;}
 	.ed-opts > a {
     position: absolute;
-}
-    .cadidatesbtn {
+	}
+	.signin-pop {
+		float: left;
+		width: 100%;
+		background-color: #fff;
+		position: relative;
+		margin-top: 0px;
+	}
+.cadidatesbtn {
     position: relative;
 }
 .place-bid-form .input-group input {
