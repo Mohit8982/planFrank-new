@@ -2,9 +2,9 @@ const router = require("express").Router();
 const createPost = require("../model/Post");
 const user = require("../model/User");
 const intrest = require("../model/Plan_category");
+const fetch = require("node-fetch");
 const moment = require("moment");
 const session = require('../helper/session');
-const request = require('request');
 const { createPlan, validate} = require('../helper/validation');
 
 router.get("/", session, async (req, res)=>{
