@@ -8,7 +8,15 @@ const { resgitrationVali, loginVali, validate} = require('../helper/validation')
 
 router.post("/registerUser", resgitrationVali(), validate, async (req, res)=>{
     try {
-        const { username, email, name, password, mobile } = req.body;
+        const { username, email, name, password, mobile, repeatpassword } = req.body;
+
+        if(password != repeatpassword){
+            return res.json({
+                status : 0,
+                message : "Please Enter Same Password!!!"
+            })
+        }
+
         const checkUser = await userCheck.findOne({username : username},{_id : 1});
 
         if(checkUser){
