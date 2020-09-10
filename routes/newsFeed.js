@@ -33,11 +33,9 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
 
         unirest('GET', link).end(async function (res) { 
             if (res.error) throw new Error(res.error); 
-
-            console.log(res)
-
-            city = res.raw_body.city;
-            state = res.raw_body.region_name;
+            let data = JSON.parse(res)
+            city = data.raw_body.city;
+            state = data.raw_body.region_name;
             const Post = new createPost({
                 title : title,
                 description: description,
