@@ -17,4 +17,4 @@ RUN cat /etc/hosts
 # Bundle app source
 COPY . /usr/src/app
 EXPOSE 5000
-CMD [ "npm", "dev" ] 
+CMD [ "npm", "start" ] 
