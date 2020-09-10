@@ -9,7 +9,7 @@ const redis = require("redis");
 const session = require("express-session");
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient(6379, 'srv-captain--rediscache', { password: 'monty123' });
-//  const redisClient = redis.createClient();
+// const redisClient = redis.createClient();
 const path = require("path");
 
 // http://maps.googleapis.com/maps/api/geocode/json?latlng=22.7195687,75.8577258&sensor=ture&key=AIzaSyCRhEYo3gT42bJn73I3f9xMFf451l1zIIc
@@ -78,7 +78,7 @@ app.get("/", async (req, res)=>{
 
 	console.log(ip)
 
-	res.render('./index', {title : "Planfrank Login"})
+	res.render('./index', {title : "Planfrank Login",data : ""})
 })
 
 const port = process.env.port || 5000;

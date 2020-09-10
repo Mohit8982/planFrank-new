@@ -148,11 +148,9 @@ router.get("/verifyUser/:id", async (req, res)=>{
             $set : {
                 verified : true
             }
-        })
-        return res.json({
-            status : 1,
-            message : "Verified Successfully"
-        })
+        });
+
+        res.render('./index', {title : "Planfrank Login", data : "Account Verified Succesfully..."})
     } catch (error) {
         res.json({
             status : 0,
