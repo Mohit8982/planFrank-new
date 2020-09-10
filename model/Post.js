@@ -22,6 +22,10 @@ const postSchema = new mongoose.Schema({
 		type : String,
 		required : false
 	},
+	postedFrom:{
+		type : String,
+		required : false
+	},
 	photo: {
 		data: Buffer,
 		contenType: String,
@@ -29,11 +33,12 @@ const postSchema = new mongoose.Schema({
 	},
 	postedBy: {
 		type : ObjectId,
-		ref : "User",
+		ref : "users",
+		required: true
 	},
 	planCategory:{
 		type : ObjectId,
-		required: false
+		required : false
 	},
 	commentCount : Number,
 	likesCount : Number,
@@ -42,7 +47,7 @@ const postSchema = new mongoose.Schema({
 	likes: [{ type: ObjectId, ref: "User" }],
 	createdAt: {
 		type: String,
-		required: true,
+		required: true
 	},
 	timeStamp:{
 		type: Number,

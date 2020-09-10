@@ -4,7 +4,7 @@
 	"description": "backend for planfrank app",
 	"main": "app.js",
 	"scripts": {
-		"dev" : "nodemon app.js",
+		"test": "nodemon app.js",
 		"start": "node app.js"
 	},
 	"keywords": [
@@ -31,6 +31,7 @@
 		"nodemailer": "^6.4.11",
 		"nodemon": "^2.0.4",
 		"path": "^0.12.7",
-		"redis": "^3.0.2"
+		"redis": "^3.0.2",
+		"unirest": "^0.6.0"
 	}
 }

@@ -48,12 +48,13 @@ const userSchema = new mongoose.Schema({
 		type : Number,
 		required : true
 	},
+	total_post: Number,
 	veri_code:{
 		type : Number,
 		required : true
 	},
-	following: [{ type: ObjectId, ref: "User" }],
-	followers: [{ type: ObjectId, ref: "User" }],
+	following: [{ type: ObjectId, ref: "Users" }],
+	followers: [{ type: ObjectId, ref: "Users" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

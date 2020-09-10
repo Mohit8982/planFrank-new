@@ -20,8 +20,8 @@ const loginVali = () => {
 const createPlan = () =>{
     return[
         body('title', 'Plan Title Cannot Be Empty').not().isEmpty(),
-        body('planTimestart', 'Plan Start Time Cannot Be Empty').not().isEmpty(),
-        body('planTimeend', 'Plan End Time Cannot Be Empty').not().isEmpty(),
+        body('planTimeStart', 'Plan Start Time Cannot Be Empty').not().isEmpty(),
+        body('planTimeEnd', 'Plan End Time Cannot Be Empty').not().isEmpty(),
         body('planDate', 'Plan Date Cannot Be Empty').not().isEmpty(),
         body('planLocation', 'Plan Location Cannot Be Empty').not().isEmpty(),
         body('planCategory', 'Select any One Plan Category').not().isEmpty(),

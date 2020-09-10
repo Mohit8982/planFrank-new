@@ -41,7 +41,8 @@ router.post("/registerUser", resgitrationVali(), validate, async (req, res)=>{
             created : currentTime,
             verified : false,
             timeStamp : timeStamp,
-            veri_code : verficationCode
+            veri_code : verficationCode,
+            total_post: 0
         });
 
         const saveUser = await register.save();
@@ -91,9 +92,10 @@ router.post("/authLogin", loginVali(), validate, async (req, res)=>{
         );
         let details = {
             name: Check_user.name,
-            user_id: Check_user._id,
+            about : Check_user.about,
+            totalPost : Check_user.total_post,
+            userId: Check_user._id,
             username: Check_user.username,
-            mobile: Check_user.mobile,
         };
         req.session.details = details;
         req.session.token = token;
