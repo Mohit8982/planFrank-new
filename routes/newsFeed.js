@@ -29,26 +29,10 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         ip = '27.5.7.160';
 
         const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
-        let city = ''; 
-        let state = '';
-
-        var options = {
-            'method': 'GET',
-            'url': link,
-            'headers': {
-                'Cookie': '__cfduid=d379be94a28ce205e99efd5ad24673a7b1599723116'
-            }
-            };
-            request(options, function (error, response) {
-            if (error) throw new Error(error);
-            // console.log(response.body);
-            const resp = JSON.parse(response.body)
-            city = resp.city;
-            state = resp.region_name;
-            console.log(city, state)
-        });
-
-        console.log(city, state)
+        
+        const locality =  await getLocation(link);
+        const city = locality.body.city; 
+        const state = locality.body.region_name;
 
         const Post = new createPost({
             title : title,
@@ -120,5 +104,25 @@ router.post('/intrestList', session, async(req, res)=>{
         })
     }
 })
+
+async function getLocation(link)
+{
+    let dataProvider;
+    await fetch(link, {
+		method: "GET",
+		body: JSON.stringify({ type: type }),
+		headers: {
+			"Content-Type": "application/json",
+			dataType: "json",
+		},
+	})
+		.then((res) => res.json())
+		.then((response) => {
+			dataProvider = response;
+		});
+
+	return Promise.resolve(dataProvider);
+
+}
 
 module.exports = router;
