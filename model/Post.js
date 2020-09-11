@@ -40,6 +40,10 @@ const postSchema = new mongoose.Schema({
 		type : ObjectId,
 		required : false
 	},
+	planCategoryname:{
+		type : String,
+		required : false
+	},
 	commentCount : Number,
 	likesCount : Number,
 	intrestedPeople : [{type: ObjectId}],

@@ -59,7 +59,7 @@
 	.job-details {width: auto;}
 	.hr-rate {margin-top: 15px;}
 	.suggestion-usd {padding: 15px 20px;}
-	.right-sidebar {margin-top: 50px;}
+	.right-sidebar {margin-top: 50px;display: none;}
 	.companies-info {padding: 30px 0 60px 0;}
 	.pf-gallery ul li {width: auto;}
 	.social_links li a {font-size: 13px;}
@@ -149,15 +149,16 @@
 		position: relative;
 		margin-top: 0px;
 	}
+	.user-info a {display: none}
 	.login-resources ul li {margin-bottom: 7px;}
-	.logo {width: 100%;text-align: center;}
+	.logo {width: 62%;text-align: center;}
 	.logo img {float: none;}
 	.search-bar {width: 100%;}
-	.user-account {float: left;}
+	.user-account {float: right;margin-right: -45px;padding: 11px 0px 0px 0px;}
 	.cm_img {width: 100%;text-align: center;margin-bottom: 10px;}
 	.cm_img img {float: none;}
 	.comment_box {width: 100%;}
-	.comment_box input {width: 100%;margin-bottom: 10px;}
+	.comment_box input {width: 70%;margin-bottom: 0px;}
 	.comment_box form button {float: none;}
 	.post-comment {text-align: center;}
 	.comment_box form button {padding: 0 15px;}
@@ -201,7 +202,7 @@
 	.notification-info {width: 100%;padding: 0;margin-top: 15px;}
 	.notification-info h3 {line-height: 18px;}
 	.conversation-box {width: 100%;right: 0;}
-	.user-account-settingss {right: auto;left: 0;}
+	/* .user-account-settingss {right: auto;left: 0;} */
 	.login-resources {text-align: left;}
 	.forum-bar ul li:last-child {margin-bottom: 0;}
 	.conversation-box {left: -20px;width: 280px;}
@@ -247,7 +248,8 @@
 	.sec-search{display: none;}
 	.searchtitle h2 {padding-bottom: 30px;}
 	.ed-opts > a {
-    position: absolute;
+	position: absolute;
+	left: -9px;
 	}
 	.signin-pop {
 		float: left;

@@ -10,8 +10,8 @@ const { createPlan, validate} = require('../helper/validation');
 router.get("/", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
-        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1});
-        res.render('./newsFeed', {title : "Planfrank Login", userInfo : userInfo, feedData : findIntrest})
+        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({_id: -1}).limit(10);
+        res.render('./newsFeed', {title : "Plan's" , userInfo : userInfo, feedData : findIntrest})
     }catch(error){
         res.json({
             status : 0,
@@ -23,7 +23,8 @@ router.get("/", session, async (req, res)=>{
 router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
     try {
         const userInfo = req.session.details;
-        const userId = userInfo.userId
+        const userId = userInfo.userId;
+        const totalPost = userInfo.userId;
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
         ip = '27.5.7.160';
@@ -31,6 +32,9 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const locality =  await getLocation(link);
         const city = locality.city; 
         const state = locality.region_name;
+        const split = planCategory.split("||");
+        const category_id = split[0];
+        const category_name = split[1];
         const Post = new createPost({
             title : title,
             description: description,
@@ -39,7 +43,8 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             planLocation : planLocation,
             postedFrom : `${city}, ${state}`,
             postedBy : userId,
-            planCategory : planCategory,
+            planCategory : category_id,
+            planCategoryname : category_name,
             commentCount: 0,
             likesCount : 0,
             createdAt : moment().format("DD/MM/YYYY hh:mm a"),
@@ -47,7 +52,10 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         })
         const postData = await Post.save();
         await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
-        await intrest.updateOne({_id : planCategory},{ $inc : { intrest_count : 1 } });
+        await intrest.updateOne({_id : category_id},{ $inc : { intrest_count : 1 } });
+
+        userInfo.totalPost = totalPost + 1
+
         res.json({
             status : 1,
             message : "Success",
@@ -101,6 +109,56 @@ router.post('/intrestList', session, async(req, res)=>{
         })
     }
 })
+
+router.post('/trendingPlan', session, async (req, res)=>{
+    try {
+        const trendingPost = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
+        res.json({
+            status : 1,
+            message : "Trending Post Link",
+            data : trendingPost
+        })
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error : ${error.toString()}`
+        })
+    }
+})
+
+router.post('/likeUnlike', session, async (req, res)=>{
+    try {
+
+        const {type, postId} = req.body;
+        const userInfo = req.session.details;
+        const userId = userInfo.userId;
+        console.log(userId)
+        let query = {
+            $inc : { likesCount : -1  },
+            $pull: { likes : userId  }
+        }
+        if(type == 1){
+            query = { 
+                $inc : { likesCount : 1  },
+                $push : {likes : userId}
+            }
+        }
+        
+        const trendingPost = await createPost.updateOne({_id : postId}, query);
+
+        res.json({
+            status : 1,
+            message : trendingPost
+        })
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error : ${error.toString()}`
+        })
+    }
+})
+
+
 
 async function getLocation(link)
 {

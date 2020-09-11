@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>WorkWise Html Template</title>
+	<title><%= title %></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
@@ -24,11 +24,29 @@
 		<header>
 			<div class="container">
 				<div class="header-data">
-					<h1 style="text-align: center;font-size: 53px;color: #ffffff;padding: 14px;">PlanFrank </h1>
+					<div class="logo">
+						<h1 style="text-align: center;font-size: 53px;color: #ffffff;">PlanFrank </h1>
+					</div>
+					<div class="user-account">
+						<div class="user-info">
+							<img src="images/resources/user.png" alt="">
+							<a href="javascript:void(0);" title="">John</a>
+							<i class="la la-sort-down"></i>
+						</div>
+						<div class="user-account-settingss" style="display: none;">
+							<h3>Setting</h3>
+							<ul class="us-links">
+								<li><a href="profile-account-setting.html" title="">Account Setting</a></li>
+								<li><a href="javascript:void(0);" title="">Privacy</a></li>
+								<li><a href="javascript:void(0);" title="">Faqs</a></li>
+								<li><a href="javascript:void(0);" title="">Terms &amp; Conditions</a></li>
+							</ul>
+							<h3 class="tc"><a href="/logout" title="">Logout</a></h3>
+						</div>
+					</div>
 				</div>
 			</div>
 		</header>
-
 		<main>
 			<div class="main-section">
 				<div class="container">
@@ -41,53 +59,21 @@
 											<div class="pf-hd">
 												<h3>Trending Plan's</h3>
 											</div>
-											<div class="profiles-slider">
+											<div class="profiles-slider" id="trendingPlans">
 												<div class="user-profy">
-													<img src="images/resources/user1.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-												<div class="user-profy">
-													<img src="images/resources/user2.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-												<div class="user-profy">
-													<img src="images/resources/user3.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-												<div class="user-profy">
-													<img src="images/resources/user1.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-												<div class="user-profy">
-													<img src="images/resources/user2.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-												<div class="user-profy">
-													<img src="images/resources/user3.png" alt="">
-													<h3>John Doe</h3>
-													<span>Graphic Designer</span>
-
-													<a href="#" title="">View Post</a>
-												</div><!--user-profy end-->
-											</div><!--profiles-slider end-->
+													<img src="/loader.gif">
+													<h4>loading...</h4>
+													<span></span>
+												</div>
+											</div>
 										</div>
-
-										<% for(index in feedData) { %>
+										
+										<% 
+											let userId = userInfo.userId;  
+											for(index in feedData) { 
+												let likesArray = feedData[index].likes;
+												let post_id = feedData[index]._id;
+										%>
 											<div class="posty">
 												<div class="post-bar no-margin">
 													<div class="post_topbar">
@@ -100,40 +86,46 @@
 																</span>
 															</div>
 														</div>
-														<div class="ed-opts">
-															<a href="#" title="" class="ed-opts-open"><i class="la la-ellipsis-v"></i></a>
-															<ul class="ed-options">
-																<li><a href="#" title="">Edit Post</a></li>
-																<li><a href="#" title="">Unsaved</a></li>
-																<li><a href="#" title="">Unbid</a></li>
-																<li><a href="#" title="">Close</a></li>
-																<li><a href="#" title="">Hide</a></li>
-															</ul>
-														</div>
 													</div>
 													<div class="epi-sec">
 														<ul class="descp">
 															<li><img src="images/icon9.png" alt=""><span><%= feedData[index].postedFrom %></span></li>
 														</ul>
 														<ul class="bk-links">
-															<li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-															<li><a href="#" title=""><i class="la la-share"></i></a></li>
+															<li><a href="javascript:void(0);" title=""><i class="la la-bookmark"></i></a></li>
+															<!-- <li><a href="javascript:void(0);" title=""><i class="la la-share"></i></a></li> -->
 														</ul>
 													</div>
 													<div class="job_descp">
-														<p><%= feedData[index].title %></p>
+														<h4 style="padding-bottom: 10px;">“<%= feedData[index].title %>”</h4>
 														<p><%= feedData[index].description %></p>
+														<p><i class="la la-map-marker"></i><%= feedData[index].planLocation %></p>
 														<ul class="skill-tags">
-															<li><a href="#" title="">Sports</a></li>
+															<li><a href="javascript:void(0);" title=""><%= feedData[index].planCategoryname %></a></li>
 														</ul>
 													</div>
 												</div>
 												<div class="comment-section">
 													<ul class="like-com">
-														<li><a href="#" class="com"><i class="fas fa-heart"></i> 15 likes</a></li>
-														<li><a href="#" class="com"><i class="fas fa-comment-alt"></i>15 comments</a></li>
+														<li id="<%= feedData[index]._id %>">
+
+															<% if(likesArray.includes(userId)){ %>
+																<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor">
+																	<i class="fas fa-heart active"></i> 
+																	<%=  feedData[index].likesCount %> likes
+																</a>
+															<% }else{ %>
+																<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com">
+																	<i class="fas fa-heart active"></i> 
+																	<%=  feedData[index].likesCount %> likes
+																</a>
+															<% } %>
+														</li>
+														<li>
+															<a href="javascript:void(0);" onclick="loadComment('<%= feedData[index]._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  feedData[index].commentCount %> comments</a>
+														</li>
 													</ul>
-													<div class="comment-sec" style="display: none;">
+													<div class="comment-sec" id="<%= feedData[index]._id %>list" style="display: none;">
 														<ul>
 															<li>
 																<div class="comment-list">
@@ -144,24 +136,9 @@
 																		<h3>John Doe</h3>
 																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
 																		<p>Lorem ipsum dolor sit amet, </p>
-																		<a href="#" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
+																		<a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
 																	</div>
-																</div><!--comment-list end-->
-																<ul>
-																	<li>
-																		<div class="comment-list">
-																			<div class="bg-img">
-																				<img src="images/resources/bg-img2.png" alt="">
-																			</div>
-																			<div class="comment">
-																				<h3>John Doe</h3>
-																				<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																				<p>Hi John </p>
-																				<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
-																			</div>
-																		</div><!--comment-list end-->
-																	</li>
-																</ul>
+																</div>
 															</li>
 															<li>
 																<div class="comment-list">
@@ -172,13 +149,13 @@
 																		<h3>John Doe</h3>
 																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
 																		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-																		<a href="#" title=""><i class="fa fa-reply-all"></i>Reply</a>
+																		<a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
 																	</div>
 																</div><!--comment-list end-->
 															</li>
 														</ul>
 													</div>
-													<div class="post-comment">
+													<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
 														<div class="comment_box">
 															<form>
 																<input type="text" placeholder="Post a comment">
@@ -214,7 +191,7 @@
 												<p style="padding: 0px 30px;">"<%= userInfo.about %>"</p>
 												<% } %>
                                                 <div class="plan" style="padding: 10px 10px 10px 10px;font-size: x-large;">
-                                                    <a class="post_project" href="#" style="color: #ff546a;">Make a Plan</a>
+                                                    <a class="post_project" href="javascript:void(0);" style="color: #ff546a;">Make a Plan</a>
                                                 </div>
 											</div>
                                         </div>
@@ -228,17 +205,17 @@
 											</li>
                                         </ul>
                                         <ul class="skill-tags">
-                                            <li><a href="#" title="">HTML</a></li>
-                                            <li><a href="#" title="">PHP</a></li>
-                                            <li><a href="#" title="">CSS</a></li>
-                                            <li><a href="#" title="">Javascript</a></li>
-                                            <li><a href="#" title="">Wordpress</a></li>
-                                            <li><a href="#" title="">HTML</a></li>
-                                            <li><a href="#" title="">PHP</a></li>
-                                            <li><a href="#" title="">CSS</a></li>
-                                            <li><a href="#" title="">Javascript</a></li>
-                                            <li><a href="#" title="">Wordpress</a></li>
-                                            <li><a href="#" title=""><i class="la la-plus-circle"></i> Add More</a></li>
+                                            <li><a href="javascript:void(0);" title="">HTML</a></li>
+                                            <li><a href="javascript:void(0);" title="">PHP</a></li>
+                                            <li><a href="javascript:void(0);" title="">CSS</a></li>
+                                            <li><a href="javascript:void(0);" title="">Javascript</a></li>
+                                            <li><a href="javascript:void(0);" title="">Wordpress</a></li>
+                                            <li><a href="javascript:void(0);" title="">HTML</a></li>
+                                            <li><a href="javascript:void(0);" title="">PHP</a></li>
+                                            <li><a href="javascript:void(0);" title="">CSS</a></li>
+                                            <li><a href="javascript:void(0);" title="">Javascript</a></li>
+                                            <li><a href="javascript:void(0);" title="">Wordpress</a></li>
+                                            <li><a href="javascript:void(0);" title=""><i class="la la-plus-circle"></i> Add More</a></li>
                                         </ul>
 									</div>
 									<div class="suggestions full-width">
@@ -296,20 +273,20 @@
 												<span><i class="la la-bookmark"></i></span>
 											</div>
 											<div class="view-more">
-												<a href="#" title="">View More</a>
+												<a href="javascript:void(0);" title="">View More</a>
 											</div>
 										</div><!--suggestions-list end-->
 									</div><!--suggestions end-->
 									<div class="tags-sec full-width">
 										<ul>
-											<li><a href="#" title="">Help Center</a></li>
-											<li><a href="#" title="">About</a></li>
-											<li><a href="#" title="">Privacy Policy</a></li>
-											<li><a href="#" title="">Community Guidelines</a></li>
-											<li><a href="#" title="">Cookies Policy</a></li>
-											<li><a href="#" title="">Career</a></li>
-											<li><a href="#" title="">Language</a></li>
-											<li><a href="#" title="">Copyright Policy</a></li>
+											<li><a href="javascript:void(0);" title="">Help Center</a></li>
+											<li><a href="javascript:void(0);" title="">About</a></li>
+											<li><a href="javascript:void(0);" title="">Privacy Policy</a></li>
+											<li><a href="javascript:void(0);" title="">Community Guidelines</a></li>
+											<li><a href="javascript:void(0);" title="">Cookies Policy</a></li>
+											<li><a href="javascript:void(0);" title="">Career</a></li>
+											<li><a href="javascript:void(0);" title="">Language</a></li>
+											<li><a href="javascript:void(0);" title="">Copyright Policy</a></li>
 										</ul>
 										<div class="cp-sec">
 											<img src="images/logo2.png" alt="">
@@ -323,7 +300,6 @@
 				</div> 
 			</div>
 		</main>
-
 		<div class="post-popup pst-pj">
 			<div class="post-project">
 				<h3>Create a Plan!!!</h3>
@@ -367,76 +343,149 @@
 							<div class="col-lg-12">
 								<ul>
 									<li><button class="active" type="submit" value="post">Create Plan</button></li>
-									<li><a href="#" title="">Cancel</a></li>
+									<li><a href="javascript:void(0);" title="">Cancel</a></li>
 								</ul>
 							</div>
 						</div>
 					</form>
-				</div><!--post-project-fields end-->
-				<a href="#" title=""><i class="la la-times-circle-o"></i></a>
-			</div><!--post-project end-->
+				</div>
+				<a href="javascript:void(0);" title=""><i class="la la-times-circle-o"></i></a>
+			</div>
 		</div>
 	</div>
-
-
-
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/popper.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
-<script type="text/javascript" src="lib/slick/slick.min.js"></script>
-<script type="text/javascript" src="js/scrollbar.js"></script>
-<script type="text/javascript" src="js/script.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-<script>
-	$(document).ready(function() {
-		$('#planSubmit').submit(function() {
-			$(this).ajaxSubmit({
-				error: function(xhr) {
-					status('Error: ' + xhr.status);
-				},
-				success: function(response) {
-					console.log(response)
-					let status = response.status;
-					if(status == 1)
-					{
-						// window.location.href = response.url;
-					}
-					else if(status == 0)
-					{
-						$("#errText").html(response.message)
-					}
-					else if(status == 3){
-						let errorData = response.errors;
-						let html = ''
-						$.each(errorData, function (key, e) 
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/popper.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
+	<script type="text/javascript" src="lib/slick/slick.min.js"></script>
+	<script type="text/javascript" src="js/scrollbar.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$('#planSubmit').submit(function() {
+				$(this).ajaxSubmit({
+					error: function(xhr) {
+						status('Error: ' + xhr.status);
+					},
+					success: function(response) {
+						let status = response.status;
+						if(status == 1)
 						{
-							html += `<li> ${e} </li>`
-						})
-						$("#errText").html(html)
+							$(".post-popup.pst-pj").removeClass("active");
+							$(".wrapper").removeClass("overlay");
+
+							return false;
+						}
+						else if(status == 0)
+						{
+							$("#errText").html(response.message)
+						}
+						else if(status == 3){
+							let errorData = response.errors;
+							let html = ''
+							$.each(errorData, function (key, e) 
+							{
+								html += `<li> ${e} </li>`
+							})
+							$("#errText").html(html)
+						}
 					}
+				});
+				return false;
+			});
+		
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/intrestList",
+				success: function (response) {
+					let options = `<option value="0">Select Plan Category</option>`
+					let intrestData = response.data;
+					intrestData.forEach(e => {
+						options += `<option value="${e._id}||${e.intrest_name}">${e.intrest_name}</option>`
+					});
+					$("#planCategory").html(options)
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
 				}
 			});
-			return false;
+		
+			$.ajax({
+					type: "post",
+					url: "/newsFeed/trendingPlan",
+					success: function (response) {
+						const planData = response.data;
+						let postData ='';
+						planData.forEach(e => {
+							postData +=	`<div class="user-profy slick-slide" style="width: 280px;" data-slick-index="4" aria-hidden="true" tabindex="-1">
+								<img src="images/resources/user2.png" alt="">
+								<h3>${e.postedBy.name}</h3>
+								<span>${e.postedFrom}</span>
+								<ul class="skill-tags">
+									<li><a href="javascript:void(0);" title="">Sports</a></li>
+								</ul>
+								<a href="/singlePost/${e._id}" title="" tabindex="-1">View Plan</a>
+							</div>`
+						});
+						$("#trendingPlans").html(postData)
+						initilize()
+					},
+					error: function (e) {
+						alert("Contact Support Partner: " + JSON.stringify(e));
+					}
+			});
 		});
-	
-		$.ajax({
-			type: "post",
-			url: "/newsFeed/intrestList",
-			success: function (response) {
-				let options = `<option value="0">Select Plan Category</option>`
-				let intrestData = response.data;
-				intrestData.forEach(e => {
-					options += `<option value="${e._id}">${e.intrest_name}</option>`
-				});
-				$("#planCategory").html(options)
-			},
-			error: function (e) {
-				alert("Contact Support Partner: " + JSON.stringify(e));
-			}
-       });
-	});
-</script>
+			
+		function likePost(postId, count){
+			let totalCount = parseInt(count) + 1;
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 1, postId : postId},
+				success: function (response) {},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
 
+		function unlikePost(postId, count){
+			let totalCount = parseInt(count) - 1;
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 2, postId : postId},
+				success: function (response) {
+
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+
+		function loadComment(postId){
+			$(`#${postId}box`).css("display", "block");
+			$(`#${postId}list`).css("display", "block");
+
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 2, postId : postId},
+				success: function (response) {
+
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+
+
+		}
+			
+	</script>
 </body>
 </html>

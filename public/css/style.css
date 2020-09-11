@@ -536,11 +536,10 @@ nav > ul > li > a:hover {
 
 .user-account {
 	float: right;
-	width: 110px;
-	border-left: 1px solid #dd3e2b;
-	border-right: 1px solid #dd3e2b;
-	box-sizing: border-box;
-	position: relative;
+    width: 110px!important;
+    box-sizing: border-box;
+    position: relative;
+	padding: 4px 0px 0px 0px;
 }
 .user-info {
 	float: left;
@@ -1279,6 +1278,10 @@ main {
 	font-weight: 600;
 }
 
+.likedColor{
+	color: #ff546a!important;
+}
+
 /* ============= skill-tags =========== */
 
 .skill-tags {
@@ -1287,6 +1290,7 @@ main {
 	margin-bottom: 15px;
 
 }
+
 .skill-tags li {
 	display: inline-block;
 	margin-right: 6px;
@@ -1327,12 +1331,6 @@ main {
 	float: left;
 	margin-top: 6px;
 	margin-right: 5px;
-}
-.like-com li a:hover {
-	color: #ff546a;
-}
-.like-com li a.active {
-	color: #ff546a;
 }
 .like-com li a i {
 	margin-right: 2px;
