@@ -46,6 +46,8 @@ const postSchema = new mongoose.Schema({
 	},
 	commentCount : Number,
 	likesCount : Number,
+	PinnedCount : Number,
+	Pinned : [{ type: ObjectId, ref: "User" }],
 	intrestedPeople : [{type: ObjectId}],
 	intrestedCount: Number,
 	likes: [{ type: ObjectId, ref: "User" }],

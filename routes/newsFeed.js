@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const createPost = require("../model/Post");
 const user = require("../model/User");
+const pinned = require("../model/Pinned_Post");
 const intrest = require("../model/Plan_category");
 const fetch = require("node-fetch");
 const moment = require("moment");
@@ -124,7 +125,9 @@ router.post('/intrestList', session, async(req, res)=>{
 
 router.post('/trendingPlan', session, async (req, res)=>{
     try {
-        const trendingPost = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
+        const todayDate = moment().format('DD/MM/YYYY')
+        const timStamp = moment(todayDate,'DD/MM/YYYY').unix();
+        const trendingPost = await createPost.find({ timeStamp : { $gte : timStamp } }).populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
         res.json({
             status : 1,
             message : "Trending Post Link",
@@ -140,11 +143,9 @@ router.post('/trendingPlan', session, async (req, res)=>{
 
 router.post('/likeUnlike', session, async (req, res)=>{
     try {
-
         const {type, postId} = req.body;
         const userInfo = req.session.details;
         const userId = userInfo.userId;
-        console.log(userId)
         let query = {
             $inc : { likesCount : -1  },
             $pull: { likes : userId  }
@@ -169,6 +170,63 @@ router.post('/likeUnlike', session, async (req, res)=>{
         })
     }
 })
+
+router.post('/pinPost', session, async (req, res)=>{
+    try {
+        const { postId, planStamp } = req.body;
+        const userInfo = req.session.details;
+        const userId = userInfo.userId
+        const todayDate = moment().format('DD/MM/YYYY')
+        const timStamp = moment(todayDate,'DD/MM/YYYY').unix();
+        const pinData = new pinned({
+            post_id : postId,
+            user_id: userId,
+            timestamp:timStamp,
+            planStamp :planStamp,
+            createdOn:todayDate
+        })
+
+        await pinData.save();
+
+        const post = await createPost.findOneAndUpdate({_id : postId},{
+            $inc : { PinnedCount : 1  },
+            $push : {Pinned : userId}
+        },{
+            new: true,
+            upsert: true,
+        })
+
+        res.json({
+            status : 1,
+            message : "Plan Pinned Successfully",
+            data : post
+        })
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error : ${error.toString()}`
+        })
+    }
+})
+
+router.post('/getPinPost', session, async (req, res)=>{
+    try {
+        const userInfo = req.session.details;
+        const userId = userInfo.userId
+        const post = await pinned.find({user_id : userId}).populate('post_id', {title : 1, postedFrom : 1}).sort({_id: -1}).limit(5);
+        
+        res.json({
+            status : 1,
+            message : "Pinned Post List",
+            data : post
+        })
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error : ${error.toString()}`
+        })
+    }
+});
 
 async function getLocation(link)
 {

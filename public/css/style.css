@@ -536,7 +536,7 @@ nav > ul > li > a:hover {
 
 .user-account {
 	float: right;
-    width: 110px!important;
+    width: 165px!important;
     box-sizing: border-box;
     position: relative;
 	padding: 4px 0px 0px 0px;
@@ -2750,6 +2750,18 @@ footer {
     white-space: nowrap;
     overflow: hidden;
 }
+
+.social_linksNew h4 {
+	float: left;
+	width: 100%;
+	color: #51a5fb;
+	font-size: 14px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
 .social_links li a i {
 	padding-right: 5px;
 	font-size: 20px;

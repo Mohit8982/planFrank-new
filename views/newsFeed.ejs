@@ -30,7 +30,7 @@
 					<div class="user-account">
 						<div class="user-info">
 							<img src="images/resources/user.png" alt="">
-							<a href="javascript:void(0);" title="">John</a>
+							<a href="javascript:void(0);" title=""><%= userInfo.name %></a>
 							<i class="la la-sort-down"></i>
 						</div>
 						<div class="user-account-settingss" style="display: none;">
@@ -72,6 +72,7 @@
 											let userId = userInfo.userId;  
 											for(index in feedData) { 
 												let likesArray = feedData[index].likes;
+												let pinArray = feedData[index].Pinned;
 												let post_id = feedData[index]._id;
 										%>
 											<div class="posty">
@@ -91,13 +92,15 @@
 														<ul class="descp">
 															<li><img src="images/icon9.png" alt=""><span><%= feedData[index].postedFrom %></span></li>
 														</ul>
-														<ul class="bk-links">
-															<li><a href="javascript:void(0);" title=""><i class="la la-bookmark"></i></a></li>
-															<!-- <li><a href="javascript:void(0);" title=""><i class="la la-share"></i></a></li> -->
-														</ul>
+														<% if(!pinArray.includes(userId)){ %>
+															<ul class="bk-links">
+																<li id="unPin<%= feedData[index]._id %>"><button style="border-radius: revert;" onclick="pinPost('<%= feedData[index]._id %>', '<%= feedData[index].timeStamp %>')"><i class="la la-bookmark" ></i></button></li>
+															</ul>
+														<% } %>
 													</div>
 													<div class="job_descp">
 														<h4 style="padding-bottom: 10px;">“<%= feedData[index].title %>”</h4>
+														<p> Timing : <%= feedData[index].planTime %></p>
 														<p><%= feedData[index].description %></p>
 														<p><i class="la la-map-marker"></i><%= feedData[index].planLocation %></p>
 														<ul class="skill-tags">
@@ -108,16 +111,15 @@
 												<div class="comment-section">
 													<ul class="like-com">
 														<li id="<%= feedData[index]._id %>">
-
 															<% if(likesArray.includes(userId)){ %>
-																<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor">
+																<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
 																	<i class="fas fa-heart active"></i> 
 																	<small id="likesCounter"> 
 																		<%=  feedData[index].likesCount %> likes
 																	</small>
 																</a>
 															<% }else{ %>
-																<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com">
+																<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
 																	<i class="fas fa-heart active"></i> 
 																	<small id="likesCounter"> 
 																		<%=  feedData[index].likesCount %> likes
@@ -225,62 +227,12 @@
 									<div class="suggestions full-width">
 										<div class="sd-title">
 											<h3>Your Pinned Post's</h3>
-											<i class="la la-ellipsis-v"></i>
 										</div>
-										<div class="suggestions-list">
-											<div class="suggestion-usd">
-												<img src="images/resources/s1.png" alt="">
-												<div class="sgt-text">
-													<h4>Jessica William</h4>
-													<span>Graphic Designer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="images/resources/s2.png" alt="">
-												<div class="sgt-text">
-													<h4>John Doe</h4>
-													<span>PHP Developer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="images/resources/s3.png" alt="">
-												<div class="sgt-text">
-													<h4>Poonam</h4>
-													<span>Wordpress Developer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="images/resources/s4.png" alt="">
-												<div class="sgt-text">
-													<h4>Bill Gates</h4>
-													<span>C & C++ Developer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="images/resources/s5.png" alt="">
-												<div class="sgt-text">
-													<h4>Jessica William</h4>
-													<span>Graphic Designer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="suggestion-usd">
-												<img src="images/resources/s6.png" alt="">
-												<div class="sgt-text">
-													<h4>John Doe</h4>
-													<span>PHP Developer</span>
-												</div>
-												<span><i class="la la-bookmark"></i></span>
-											</div>
-											<div class="view-more">
-												<a href="javascript:void(0);" title="">View More</a>
-											</div>
-										</div><!--suggestions-list end-->
-									</div><!--suggestions end-->
+										<div class="suggestions-list" id="pinnedPostDiv">
+											<h3 class="text-center">  Loading Your Pinned Post... </h3>
+											<!--  -->
+										</div>
+									</div>
 									<div class="tags-sec full-width">
 										<ul>
 											<li><a href="javascript:void(0);" title="">Help Center</a></li>
@@ -439,30 +391,29 @@
 						alert("Contact Support Partner: " + JSON.stringify(e));
 					}
 			});
+		
+			getpinPost()
 		});
 			
 		function likePost(postId, count){
 			let totalCount = parseInt(count) + 1;
-			$("#likesCounter").html(`${totalCount} likes`);
-			setTimeout(function(){ 
-				$.ajax({
-					type: "post",
-					url: "/newsFeed/likeUnlike",
-					data :{type : 1, postId : postId},
-					success: function (response) {
-						$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-					},
-					error: function (e) {
-						alert("Contact Support Partner: " + JSON.stringify(e));
-					}
-				});
-			}, 3000);
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 1, postId : postId},
+				success: function (response) {
+					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
 		}
 
 		function unlikePost(postId, count){
 			let totalCount = parseInt(count) - 1;
-			$("#likesCounter").html(`${totalCount} likes`);
-
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
 			setTimeout(function(){ 
 				$.ajax({
 					type: "post",
@@ -478,10 +429,19 @@
 			}, 3000);
 		}
 
+		function tempUnlikePost(postId, count){
+			let totalCount = parseInt(count) - 1;
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+		}
+
+		function tempLike(postId, count){
+			let totalCount = parseInt(count) + 1;
+			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+		}
+
 		function loadComment(postId){
 			$(`#${postId}box`).css("display", "block");
 			$(`#${postId}list`).css("display", "block");
-
 			$.ajax({
 				type: "post",
 				url: "/newsFeed/likeUnlike",
@@ -493,10 +453,54 @@
 					alert("Contact Support Partner: " + JSON.stringify(e));
 				}
 			});
-
-
 		}
-			
+		
+		function getpinPost(){
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/getPinPost",
+				success: function (response) {
+					let postData = response.data;
+					let html = ''
+					postData.forEach(element => {
+						html += `<div class="suggestion-usd">
+							<div class="sgt-text">
+								<h4>${element.post_id.title}</h4>
+								<span>${element.post_id.postedFrom}</span>
+							</div>
+						</div>`
+					});
+					html += `<div class="view-more"><a href="#" title="">View More</a></div>`
+					$("#pinnedPostDiv").html(html);
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+
+		function pinPost(postId, timeStamp){
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/pinPost",
+				data :{postId : postId, planStamp : timeStamp},
+				success: function (response) {
+					console.log(response)
+					$(`#unPin${postId}`).remove()
+					let postData = response.data;
+					$("#pinnedPostDiv").prepend(`<div class="suggestion-usd">
+						<div class="sgt-text">
+							<h4>${postData.title}</h4>
+							<span>${postData.postedFrom}</span>
+						</div>
+					</div>`);
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+		
 	</script>
 </body>
 </html>
