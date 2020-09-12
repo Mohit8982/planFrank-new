@@ -24,7 +24,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
     try {
         const userInfo = req.session.details;
         const userId = userInfo.userId;
-        const totalPost = userInfo.userId;
+        const totalPost = userInfo.totalPost;
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
         // ip = '27.5.7.160';
