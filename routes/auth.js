@@ -26,6 +26,15 @@ router.post("/registerUser", resgitrationVali(), validate, async (req, res)=>{
             })
         }
 
+        const checkEmail = await userCheck.findOne({email : email},{_id : 1});
+
+        if(checkEmail){
+            return res.json({
+                status : 0,
+                message : "Woopssss Someone Already Registered With This Email-id...!!!!"
+            })
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
         const currentTime = moment().format("DD/MM/YYYY hh:mm:ss a");
