@@ -112,12 +112,16 @@
 															<% if(likesArray.includes(userId)){ %>
 																<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor">
 																	<i class="fas fa-heart active"></i> 
-																	<%=  feedData[index].likesCount %> likes
+																	<small id="likesCounter"> 
+																		<%=  feedData[index].likesCount %> likes
+																	</small>
 																</a>
 															<% }else{ %>
 																<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com">
 																	<i class="fas fa-heart active"></i> 
-																	<%=  feedData[index].likesCount %> likes
+																	<small id="likesCounter"> 
+																		<%=  feedData[index].likesCount %> likes
+																	</small>
 																</a>
 															<% } %>
 														</li>
@@ -439,14 +443,15 @@
 			
 		function likePost(postId, count){
 			let totalCount = parseInt(count) + 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-
+			$("#likesCounter").html(`${totalCount} likes`);
 			setTimeout(function(){ 
 				$.ajax({
 					type: "post",
 					url: "/newsFeed/likeUnlike",
 					data :{type : 1, postId : postId},
-					success: function (response) {},
+					success: function (response) {
+						$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+					},
 					error: function (e) {
 						alert("Contact Support Partner: " + JSON.stringify(e));
 					}
@@ -456,14 +461,15 @@
 
 		function unlikePost(postId, count){
 			let totalCount = parseInt(count) - 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$("#likesCounter").html(`${totalCount} likes`);
+
 			setTimeout(function(){ 
 				$.ajax({
 					type: "post",
 					url: "/newsFeed/likeUnlike",
 					data :{type : 2, postId : postId},
 					success: function (response) {
-
+						$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
 					},
 					error: function (e) {
 						alert("Contact Support Partner: " + JSON.stringify(e));
@@ -475,8 +481,6 @@
 		function loadComment(postId){
 			$(`#${postId}box`).css("display", "block");
 			$(`#${postId}list`).css("display", "block");
-
-
 
 			$.ajax({
 				type: "post",

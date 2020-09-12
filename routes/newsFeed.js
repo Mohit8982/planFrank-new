@@ -26,42 +26,55 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const userId = userInfo.userId;
         const totalPost = userInfo.totalPost;
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
-        let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        // ip = '27.5.7.160';
-        const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
-        const locality =  await getLocation(link);
-        const city = locality.city; 
-        const state = locality.region_name;
-        const split = planCategory.split("||");
-        const category_id = split[0];
-        const category_name = split[1];
-        const Post = new createPost({
-            title : title,
-            description: description,
-            planTime : `${planTimeStart} - ${planTimeEnd}`,
-            planDate : planDate,
-            planLocation : planLocation,
-            postedFrom : `${city}, ${state}`,
-            postedBy : userId,
-            planCategory : category_id,
-            planCategoryname : category_name,
-            commentCount: 0,
-            likesCount : 0,
-            createdAt : moment().format("DD/MM/YYYY hh:mm a"),
-            timeStamp : moment().unix()
-        })
-        const postData = await Post.save();
-        await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
-        await intrest.updateOne({_id : category_id},{ $inc : { intrest_count : 1 } });
-
-        userInfo.totalPost = totalPost + 1
-
-        res.json({
-            status : 1,
-            message : "Success",
-            postData : postData,
-            userInfo :userInfo
-        })
+        const todayDate = moment().format('YYYY-MM-DD');
+        const checkDate = moment(planDate).isBefore(todayDate);
+        console.log(planTimeStart)
+        const timeStart = moment(planTimeStart, "hh:mm").format("hh:mm a");
+        const timeEnd = moment(planTimeEnd, "hh:mm").format("hh:mm a");
+        if(checkDate == false)
+        {
+            let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            let postedFrom = 'Location Not Available';
+            const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
+            const locality =  await getLocation(link);
+            city = locality.city; 
+            state = locality.region_name;
+            postedFrom = `${city}, ${state}`;
+            const split = planCategory.split("||");
+            const category_id = split[0];
+            const category_name = split[1];
+            const Post = new createPost({
+                title : title,
+                description: description,
+                planTime : `${timeStart} - ${timeEnd}`,
+                planDate : planDate,
+                planLocation : planLocation,
+                postedFrom : postedFrom,
+                postedBy : userId,
+                planCategory : category_id,
+                planCategoryname : category_name,
+                commentCount: 0,
+                likesCount : 0,
+                createdAt : moment().format("DD/MM/YYYY hh:mm a"),
+                timeStamp : moment().unix()
+            })
+            const postData = await Post.save();
+            await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
+            await intrest.updateOne({_id : category_id},{ $inc : { intrest_count : 1 } });
+            userInfo.totalPost = totalPost + 1;
+            return res.json({
+                status : 1,
+                message : "Success",
+                postData : postData,
+                userInfo :userInfo
+            })
+        }
+        else{
+            return res.json({
+                status : 0,
+                message : "Sorry Plan Date Cannot be Past Date"
+            })
+        }
     } catch (error) {
         console.log(error)
         res.json({
