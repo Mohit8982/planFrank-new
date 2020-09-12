@@ -150,6 +150,24 @@
 		margin-top: 0px;
 	}
 
+	.bottom-scroll {
+		position: fixed;
+    right: 15%;
+    bottom: 83%;
+    z-index: 999;
+    background: #ff546a;
+    cursor: pointer;
+    display: flex;
+    width: 68%;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #ffffff;
+    border-radius: 50px;
+
+	}
+
 	.headerLogo{
 		text-align: center;
 		font-size: 30px;

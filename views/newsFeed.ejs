@@ -1,506 +1,260 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title><%= title %></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="" />
-	<meta name="keywords" content="" />
-	<link rel="icon" type="image/png" href="/logoSmall.png">
-	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/line-awesome.css">
-	<link rel="stylesheet" type="text/css" href="css/line-awesome-font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="vendor/fontawesome-free/css/all.min.css">
-	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="css/jquery.mCustomScrollbar.min.css">
-	<link rel="stylesheet" type="text/css" href="lib/slick/slick.css">
-	<link rel="stylesheet" type="text/css" href="lib/slick/slick-theme.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<link rel="stylesheet" type="text/css" href="css/responsive.css">
-</head>
-<body oncontextmenu="return false;">
-	<div class="wrapper">
-		<header>
-			<div class="container">
-				<div class="header-data">
-					<div class="logo">
-						<h1 class="headerLogo" style="">PlanFrank </h1>
-					</div>
-					<div class="user-account">
-						<div class="user-info">
-							<img src="/logoSmall.png" height="30" alt="">
-							<a href="javascript:void(0);" title=""><%= userInfo.name %></a>
-							<i class="la la-sort-down"></i>
-						</div>
-						<div class="user-account-settingss" style="display: none;">
-							<h3>Setting</h3>
-							<ul class="us-links">
-								<li><a href="profile-account-setting.html" title="">Account Setting</a></li>
-								<li><a href="javascript:void(0);" title="">Privacy</a></li>
-								<li><a href="javascript:void(0);" title="">Faqs</a></li>
-								<li><a href="javascript:void(0);" title="">Terms &amp; Conditions</a></li>
-							</ul>
-							<h3 class="tc"><a href="/logout" title="">Logout</a></h3>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-		<main>
-			<div class="main-section">
-				<div class="container">
-					<div class="main-section-data">
-						<div class="row">
-							<div class="col-lg-8 col-md-8 no-pd">
-								<div class="main-ws-sec">
-									<div class="posts-section">
-                                        <div class="top-profiles">
-											<div class="pf-hd">
-												<h3>Trending Plan's</h3>
-											</div>
-											<div class="profiles-slider" id="trendingPlans">
-												<div class="user-profy">
-													<img src="/loader.gif">
-													<h4>loading...</h4>
-													<span></span>
+<% layout('./layout') %>
+<div class="bottom-scroll bottom-160" style="display: none;">
+		<a href="/">Yayyy someone Posted a new Plan...!!!!</a>
+		&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+</div>
+<main>
+	<div class="main-section">
+		<div class="container">
+			<div class="main-section-data">
+				<div class="row">
+					<div class="col-lg-8 col-md-8 no-pd">
+						<div class="main-ws-sec">
+							<div class="posts-section">
+								<div class="top-profiles">
+									<div class="pf-hd">
+										<h3>Trending Plan's</h3>
+									</div>
+									<div class="profiles-slider" id="trendingPlans">
+										<div class="user-profy">
+											<img src="/loader.gif">
+											<h4>loading...</h4>
+											<span></span>
+										</div>
+									</div>
+								</div>
+								<% 
+									let userId = userInfo.userId;
+									for(index in feedData) { 
+										let likesArray = feedData[index].likes;
+										let pinArray = feedData[index].Pinned;
+										let post_id = feedData[index]._id;
+								%>
+									<div class="posty">
+										<div class="post-bar no-margin">
+											<div class="post_topbar">
+												<div class="usy-dt">
+													<img src="/logoSmall.png" height="50" alt="">
+													<div class="usy-name">
+														<h3><%= feedData[index].postedBy.name %></h3>
+														<span><img src="images/clock.png" alt="">
+															<%= feedData[index].createdAt %>
+														</span>
+													</div>
 												</div>
 											</div>
+											<div class="epi-sec">
+												<ul class="descp">
+													<li><img src="images/icon9.png" alt=""><span><%= feedData[index].postedFrom %></span></li>
+												</ul>
+												<% if(!pinArray.includes(userId)){ %>
+													<ul class="bk-links">
+														<li id="unPin<%= feedData[index]._id %>"><button style="border-radius: revert;" onclick="pinPost('<%= feedData[index]._id %>', '<%= feedData[index].timeStamp %>')"><i class="la la-bookmark" ></i></button></li>
+													</ul>
+												<% } %>
+											</div>
+											<div class="job_descp">
+												<h4 style="padding-bottom: 10px;">“<%= feedData[index].title %>”</h4>
+												<p> Timing : <%= feedData[index].planTime %></p>
+												<p><%= feedData[index].description %></p>
+												<p><i class="la la-map-marker"></i><%= feedData[index].planLocation %></p>
+												<ul class="skill-tags">
+													<li><a href="javascript:void(0);" title=""><%= feedData[index].planCategoryname %></a></li>
+												</ul>
+											</div>
 										</div>
-										<% 
-											let userId = userInfo.userId;  
-											for(index in feedData) { 
-												let likesArray = feedData[index].likes;
-												let pinArray = feedData[index].Pinned;
-												let post_id = feedData[index]._id;
-										%>
-											<div class="posty">
-												<div class="post-bar no-margin">
-													<div class="post_topbar">
-														<div class="usy-dt">
-															<img src="/logoSmall.png" height="50" alt="">
-															<div class="usy-name">
-																<h3><%= feedData[index].postedBy.name %></h3>
-																<span><img src="images/clock.png" alt="">
-																	<%= feedData[index].createdAt %>
-																</span>
+										<div class="comment-section">
+											<ul class="like-com">
+												<li id="<%= feedData[index]._id %>">
+													<% if(likesArray.includes(userId)){ %>
+														<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
+															<i class="fas fa-heart active"></i> 
+															<small id="likesCounter"> 
+																<%=  feedData[index].likesCount %> likes
+															</small>
+														</a>
+													<% }else{ %>
+														<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
+															<i class="fas fa-heart active"></i> 
+															<small id="likesCounter"> 
+																<%=  feedData[index].likesCount %> likes
+															</small>
+														</a>
+													<% } %>
+												</li>
+												<li>
+													<a href="javascript:void(0);" onclick="loadComment('<%= feedData[index]._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  feedData[index].commentCount %> comments</a>
+												</li>
+											</ul>
+											<div class="comment-sec" id="<%= feedData[index]._id %>list" style="display: none;">
+												<ul>
+													<li>
+														<div class="comment-list">
+															<div class="bg-img">
+																<img src="images/resources/bg-img1.png" alt="">
+															</div>
+															<div class="comment">
+																<h3>John Doe</h3>
+																<span><img src="images/clock.png" alt=""> 3 min ago</span>
+																<p>Lorem ipsum dolor sit amet, </p>
+																<a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
 															</div>
 														</div>
-													</div>
-													<div class="epi-sec">
-														<ul class="descp">
-															<li><img src="images/icon9.png" alt=""><span><%= feedData[index].postedFrom %></span></li>
-														</ul>
-														<% if(!pinArray.includes(userId)){ %>
-															<ul class="bk-links">
-																<li id="unPin<%= feedData[index]._id %>"><button style="border-radius: revert;" onclick="pinPost('<%= feedData[index]._id %>', '<%= feedData[index].timeStamp %>')"><i class="la la-bookmark" ></i></button></li>
-															</ul>
-														<% } %>
-													</div>
-													<div class="job_descp">
-														<h4 style="padding-bottom: 10px;">“<%= feedData[index].title %>”</h4>
-														<p> Timing : <%= feedData[index].planTime %></p>
-														<p><%= feedData[index].description %></p>
-														<p><i class="la la-map-marker"></i><%= feedData[index].planLocation %></p>
-														<ul class="skill-tags">
-															<li><a href="javascript:void(0);" title=""><%= feedData[index].planCategoryname %></a></li>
-														</ul>
-													</div>
-												</div>
-												<div class="comment-section">
-													<ul class="like-com">
-														<li id="<%= feedData[index]._id %>">
-															<% if(likesArray.includes(userId)){ %>
-																<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
-																	<i class="fas fa-heart active"></i> 
-																	<small id="likesCounter"> 
-																		<%=  feedData[index].likesCount %> likes
-																	</small>
-																</a>
-															<% }else{ %>
-																<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
-																	<i class="fas fa-heart active"></i> 
-																	<small id="likesCounter"> 
-																		<%=  feedData[index].likesCount %> likes
-																	</small>
-																</a>
-															<% } %>
-														</li>
-														<li>
-															<a href="javascript:void(0);" onclick="loadComment('<%= feedData[index]._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  feedData[index].commentCount %> comments</a>
-														</li>
-													</ul>
-													<div class="comment-sec" id="<%= feedData[index]._id %>list" style="display: none;">
-														<ul>
-															<li>
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img src="images/resources/bg-img1.png" alt="">
-																	</div>
-																	<div class="comment">
-																		<h3>John Doe</h3>
-																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																		<p>Lorem ipsum dolor sit amet, </p>
-																		<a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
-																	</div>
-																</div>
-															</li>
-															<li>
-																<div class="comment-list">
-																	<div class="bg-img">
-																		<img src="images/resources/bg-img3.png" alt="">
-																	</div>
-																	<div class="comment">
-																		<h3>John Doe</h3>
-																		<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-																		<a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
-																	</div>
-																</div><!--comment-list end-->
-															</li>
-														</ul>
-													</div>
-													<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
-														<div class="comment_box">
-															<form>
-																<input type="text" placeholder="Post a comment">
-																<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
-															</form>
-														</div>
-													</div>
-												</div>
+													</li>
+													<li>
+														<div class="comment-list">
+															<div class="bg-img">
+																<img src="images/resources/bg-img3.png" alt="">
+															</div>
+															<div class="comment">
+																<h3>John Doe</h3>
+																<span><img src="images/clock.png" alt=""> 3 min ago</span>
+																<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
+																<a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
+															</div>
+														</div><!--comment-list end-->
+													</li>
+												</ul>
 											</div>
-										<% } %>
-										<div class="process-comm">
-											<div class="spinner">
-												<div class="bounce1"></div>
-												<div class="bounce2"></div>
-												<div class="bounce3"></div>
+											<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
+												<div class="comment_box">
+													<form>
+														<input type="text" placeholder="Post a comment">
+														<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
+													</form>
+												</div>
 											</div>
 										</div>
+									</div>
+								<% } %>
+								<div class="process-comm">
+									<div class="spinner">
+										<div class="bounce1"></div>
+										<div class="bounce2"></div>
+										<div class="bounce3"></div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-4 pd-right-none no-pd">
-								<div class="right-sidebar">
-									<div class="user-data full-width">
-										<div class="user-profile">
-											<div class="username-dt">
-												<div class="usr-pic">
-													<img src="/logoSmall.png" alt="">
-												</div>
-                                            </div>
-											<div class="user-specs">
-												<h3><%= userInfo.name %></h3>
-												<% if(userInfo.about != undefined) {%>
-												<p style="padding: 0px 30px;">"<%= userInfo.about %>"</p>
-												<% } %>
-                                                <div class="plan" style="padding: 10px 10px 10px 10px;font-size: x-large;">
-                                                    <a class="post_project" href="javascript:void(0);" style="color: #ff546a;">Make a Plan</a>
-                                                </div>
-											</div>
-                                        </div>
-										<ul class="user-fw-status">
-											<li>
-												<h4>Total Post</h4>
-												<span><%= userInfo.totalPost %></span>
-											</li>
-											<li>
-												<h4>Your Intrest</h4>
-											</li>
-                                        </ul>
-                                        <ul class="skill-tags">
-                                            <li><a href="javascript:void(0);" title="">HTML</a></li>
-                                            <li><a href="javascript:void(0);" title="">PHP</a></li>
-                                            <li><a href="javascript:void(0);" title="">CSS</a></li>
-                                            <li><a href="javascript:void(0);" title="">Javascript</a></li>
-                                            <li><a href="javascript:void(0);" title="">Wordpress</a></li>
-                                            <li><a href="javascript:void(0);" title="">HTML</a></li>
-                                            <li><a href="javascript:void(0);" title="">PHP</a></li>
-                                            <li><a href="javascript:void(0);" title="">CSS</a></li>
-                                            <li><a href="javascript:void(0);" title="">Javascript</a></li>
-                                            <li><a href="javascript:void(0);" title="">Wordpress</a></li>
-                                            <li><a href="javascript:void(0);" title=""><i class="la la-plus-circle"></i> Add More</a></li>
-                                        </ul>
-									</div>
-									<div class="suggestions full-width">
-										<div class="sd-title">
-											<h3>Your Pinned Post's</h3>
-										</div>
-										<div class="suggestions-list" id="pinnedPostDiv">
-											<h3 class="text-center">  Loading Your Pinned Post... </h3>
-											<!--  -->
-										</div>
-									</div>
-									<div class="tags-sec full-width">
-										<ul>
-											<li><a href="javascript:void(0);" title="">Help Center</a></li>
-											<li><a href="javascript:void(0);" title="">About</a></li>
-											<li><a href="javascript:void(0);" title="">Privacy Policy</a></li>
-											<li><a href="javascript:void(0);" title="">Community Guidelines</a></li>
-											<li><a href="javascript:void(0);" title="">Cookies Policy</a></li>
-											<li><a href="javascript:void(0);" title="">Career</a></li>
-											<li><a href="javascript:void(0);" title="">Language</a></li>
-											<li><a href="javascript:void(0);" title="">Copyright Policy</a></li>
-										</ul>
-										<div class="cp-sec">
-											<img src="/logoSmall.png" height="20" alt="">
-											<p><img src="images/cp.png" alt="">Copyright 2019</p>
-										</div>
-									</div><!--tags-sec end-->
-								</div><!--right-sidebar end-->
 							</div>
 						</div>
 					</div>
-				</div> 
-			</div>
-		</main>
-		<div class="post-popup pst-pj">
-			<div class="post-project">
-				<h3>Create a Plan!!!</h3>
-				<div class="post-project-fields">
-					<form id="planSubmit" action="/newsFeed/createPlan" method="post">
-						<div class="row">
-							<div class="col-lg-12">
-								<input type="text" name="title" placeholder="Plan Title">
-							</div>
-							<div class="col-lg-12">
-								<textarea name="description" placeholder="Detailed Plan Description"></textarea>
-							</div>
-							<div class="col-lg-4">
-								<label style="color: #ff546a;padding: 5px;"> Plan Date </label>
-								<input type="date" name="planDate" />
-							</div>
-							<div class="col-lg-4">
-								<label><h4 style="color: #ff546a;padding: 5px;"> Plan Time Start's </h4></label>
-								<input type="time" name="planTimeStart" />
-							</div>
-							<div class="col-lg-4">
-								<label> <h4 style="color: #ff546a;padding: 5px;">Plan Time End's</h4> </label>
-								<input type="time" name="planTimeEnd" />
-							</div>
-							<div class="col-lg-12">
-								<label> <h4 style="color: #ff546a;padding: 5px;">Select Plan Category</h4> </label>
-								<select name="planCategory" id="planCategory">
-									
-								</select>
-							</div>
-							<div class="col-lg-12">
-								<textarea name="planLocation" placeholder="Enter Plan Location"></textarea>
-							</div>
-							<div class="col-lg-12">
-								<div class="checky-sec st2">
-									<div class="fgt-sec">
-										<small id="errText"></small>
+					<div class="col-lg-4 pd-right-none no-pd">
+						<div class="right-sidebar">
+							<div class="user-data full-width">
+								<div class="user-profile">
+									<div class="username-dt">
+										<div class="usr-pic">
+											<img src="/logoSmall.png" alt="">
+										</div>
+									</div>
+									<div class="user-specs">
+										<h3><%= userInfo.name %></h3>
+										<% if(userInfo.about != undefined) {%>
+										<p style="padding: 0px 30px;">"<%= userInfo.about %>"</p>
+										<% } %>
+										<div class="plan" style="padding: 10px 10px 10px 10px;font-size: x-large;">
+											<a class="post_project" href="javascript:void(0);" style="color: #ff546a;">Make a Plan</a>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-lg-12">
-								<ul>
-									<li><button class="active" type="submit" value="post">Create Plan</button></li>
-									<li><a href="javascript:void(0);" title="">Cancel</a></li>
+								<ul class="user-fw-status">
+									<li>
+										<h4>Total Post</h4>
+										<span><%= userInfo.totalPost %></span>
+									</li>
+									<li>
+										<h4>Your Intrest</h4>
+									</li>
 								</ul>
-							</div>
-						</div>
-					</form>
-				</div>
-				<a href="javascript:void(0);" title=""><i class="la la-times-circle-o"></i></a>
-			</div>
-		</div>
-	</div>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/popper.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.mCustomScrollbar.js"></script>
-	<script type="text/javascript" src="lib/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/scrollbar.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
-	<script>
-		$(document).ready(function() {
-			$('#planSubmit').submit(function() {
-				$(this).ajaxSubmit({
-					error: function(xhr) {
-						status('Error: ' + xhr.status);
-					},
-					success: function(response) {
-						let status = response.status;
-						if(status == 1)
-						{
-							$(".post-popup.pst-pj").removeClass("active");
-							$(".wrapper").removeClass("overlay");
-
-							return false;
-						}
-						else if(status == 0)
-						{
-							$("#errText").html(response.message)
-						}
-						else if(status == 3){
-							let errorData = response.errors;
-							let html = ''
-							$.each(errorData, function (key, e) 
-							{
-								html += `<li> ${e} </li>`
-							})
-							$("#errText").html(html)
-						}
-					}
-				});
-				return false;
-			});
-		
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/intrestList",
-				success: function (response) {
-					let options = `<option value="0">Select Plan Category</option>`
-					let intrestData = response.data;
-					intrestData.forEach(e => {
-						options += `<option value="${e._id}||${e.intrest_name}">${e.intrest_name}</option>`
-					});
-					$("#planCategory").html(options)
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
-		
-			$.ajax({
-					type: "post",
-					url: "/newsFeed/trendingPlan",
-					success: function (response) {
-						const planData = response.data;
-						let postData ='';
-						planData.forEach(e => {
-							postData +=	`<div class="user-profy slick-slide" style="width: 280px;" data-slick-index="4" aria-hidden="true" tabindex="-1">
-								<img src="images/resources/user2.png" alt="">
-								<h3>${e.postedBy.name}</h3>
-								<span>${e.postedFrom}</span>
 								<ul class="skill-tags">
-									<li><a href="javascript:void(0);" title="">Sports</a></li>
+									<li><a href="javascript:void(0);" title="">HTML</a></li>
+									<li><a href="javascript:void(0);" title="">PHP</a></li>
+									<li><a href="javascript:void(0);" title="">CSS</a></li>
+									<li><a href="javascript:void(0);" title="">Javascript</a></li>
+									<li><a href="javascript:void(0);" title="">Wordpress</a></li>
+									<li><a href="javascript:void(0);" title="">HTML</a></li>
+									<li><a href="javascript:void(0);" title="">PHP</a></li>
+									<li><a href="javascript:void(0);" title="">CSS</a></li>
+									<li><a href="javascript:void(0);" title="">Javascript</a></li>
+									<li><a href="javascript:void(0);" title="">Wordpress</a></li>
+									<li><a href="javascript:void(0);" title=""><i class="la la-plus-circle"></i> Add More</a></li>
 								</ul>
-								<a href="/singlePost/${e._id}" title="" tabindex="-1">View Plan</a>
-							</div>`
-						});
-						$("#trendingPlans").html(postData)
-						initilize()
-					},
-					error: function (e) {
-						alert("Contact Support Partner: " + JSON.stringify(e));
-					}
-			});
-		
-			getpinPost()
-		});
-			
-		function likePost(postId, count){
-			let totalCount = parseInt(count) + 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/likeUnlike",
-				data :{type : 1, postId : postId},
-				success: function (response) {
-					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
-		}
-
-		function unlikePost(postId, count){
-			let totalCount = parseInt(count) - 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-			setTimeout(function(){ 
-				$.ajax({
-					type: "post",
-					url: "/newsFeed/likeUnlike",
-					data :{type : 2, postId : postId},
-					success: function (response) {
-						$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-					},
-					error: function (e) {
-						alert("Contact Support Partner: " + JSON.stringify(e));
-					}
-				});
-			}, 3000);
-		}
-
-		function tempUnlikePost(postId, count){
-			let totalCount = parseInt(count) - 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-		}
-
-		function tempLike(postId, count){
-			let totalCount = parseInt(count) + 1;
-			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-		}
-
-		function loadComment(postId){
-			$(`#${postId}box`).css("display", "block");
-			$(`#${postId}list`).css("display", "block");
-			// $.ajax({
-			// 	type: "post",
-			// 	url: "/newsFeed/comments",
-			// 	data :{postId : postId},
-			// 	success: function (response) {
-
-			// 	},
-			// 	error: function (e) {
-			// 		alert("Contact Support Partner: " + JSON.stringify(e));
-			// 	}
-			// });
-		}
-		
-		function getpinPost(){
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/getPinPost",
-				success: function (response) {
-					let postData = response.data;
-					let html = ''
-					postData.forEach(element => {
-						html += `<div class="suggestion-usd">
-							<div class="sgt-text">
-								<h4>${element.post_id.title}</h4>
-								<span>${element.post_id.postedFrom}</span>
 							</div>
-						</div>`
-					});
-					html += `<div class="view-more"><a href="#" title="">View More</a></div>`
-					$("#pinnedPostDiv").html(html);
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
-		}
-
-		function pinPost(postId, timeStamp){
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/pinPost",
-				data :{postId : postId, planStamp : timeStamp},
-				success: function (response) {
-					console.log(response)
-					$(`#unPin${postId}`).remove()
-					let postData = response.data;
-					$("#pinnedPostDiv").prepend(`<div class="suggestion-usd">
-						<div class="sgt-text">
-							<h4>${postData.title}</h4>
-							<span>${postData.postedFrom}</span>
+							<div class="suggestions full-width">
+								<div class="sd-title">
+									<h3>Your Pinned Post's</h3>
+								</div>
+								<div class="suggestions-list" id="pinnedPostDiv">
+									<h3 class="text-center">  Loading Your Pinned Post... </h3>
+									<!--  -->
+								</div>
+							</div>
+							<div class="tags-sec full-width">
+								<ul>
+									<li><a href="javascript:void(0);" title="">Help Center</a></li>
+									<li><a href="javascript:void(0);" title="">About</a></li>
+									<li><a href="javascript:void(0);" title="">Copyright Policy</a></li>
+								</ul>
+								<div class="cp-sec">
+									<img src="/logoSmall.png" height="20" alt="">
+									<p><img src="images/cp.png" alt="">Copyright 2019</p>
+								</div>
+							</div>
 						</div>
-					</div>`);
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
-		}
-		
-	</script>
-</body>
-</html>
+					</div>
+				</div>
+			</div>
+		</div> 
+	</div>
+</main>
+<div class="post-popup pst-pj">
+	<div class="post-project">
+		<h3>Create a Plan!!!</h3>
+		<div class="post-project-fields">
+			<form id="planSubmit" action="/newsFeed/createPlan" method="post">
+				<div class="row">
+					<div class="col-lg-12">
+						<input type="text" name="title" placeholder="Plan Title">
+					</div>
+					<div class="col-lg-12">
+						<textarea name="description" placeholder="Detailed Plan Description"></textarea>
+					</div>
+					<div class="col-lg-4">
+						<label style="color: #ff546a;padding: 5px;"> Plan Date </label>
+						<input type="date" name="planDate" />
+					</div>
+					<div class="col-lg-4">
+						<label><h4 style="color: #ff546a;padding: 5px;"> Plan Time Start's </h4></label>
+						<input type="time" name="planTimeStart" />
+					</div>
+					<div class="col-lg-4">
+						<label> <h4 style="color: #ff546a;padding: 5px;">Plan Time End's</h4> </label>
+						<input type="time" name="planTimeEnd" />
+					</div>
+					<div class="col-lg-12">
+						<label> <h4 style="color: #ff546a;padding: 5px;">Select Plan Category</h4> </label>
+						<select name="planCategory" id="planCategory">
+							
+						</select>
+					</div>
+					<div class="col-lg-12">
+						<textarea name="planLocation" placeholder="Enter Plan Location"></textarea>
+					</div>
+					<div class="col-lg-12">
+						<div class="checky-sec st2">
+							<div class="fgt-sec">
+								<small id="errText"></small>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-12">
+						<ul>
+							<li><button class="active" type="submit" value="post">Create Plan</button></li>
+							<li><a href="javascript:void(0);" title="">Cancel</a></li>
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+		<a href="javascript:void(0);" title=""><i class="la la-times-circle-o"></i></a>
+	</div>
+</div>

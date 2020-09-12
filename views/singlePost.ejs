@@ -1,0 +1,119 @@
+<% layout('./layout') %>
+<main>
+    <div class="main-section">
+        <div class="container">
+            <div class="main-section-data">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 no-pd">
+                        <div class="main-ws-sec">
+                            <div class="posts-section">
+                                    <div class="posty">
+                                        <div class="post-bar no-margin">
+                                            <div class="post_topbar">
+                                                <div class="usy-dt">
+                                                    <img src="/logoSmall.png" height="50" alt="">
+                                                    <div class="usy-name">
+                                                        <%
+                                                        let userId = userInfo.userId;
+                                                        let likesArray = postData.likes;
+                                                        let pinArray = postData.Pinned;
+                                                        let post_id = postData._id;
+                                                        %>
+                                                        <h3><%= postData.postedBy.name %></h3>
+                                                        <span><img src="images/clock.png" alt="">
+                                                            <%= postData.createdAt %>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="epi-sec">
+                                                <ul class="descp">
+                                                    <li><img src="images/icon9.png" alt=""><span><%= postData.postedFrom %></span></li>
+                                                </ul>
+                                                <% if(!pinArray.includes(userId)){ %>
+                                                    <ul class="bk-links">
+                                                        <li id="unPin<%= postData._id %>"><button style="border-radius: revert;" onclick="pinPost('<%= postData._id %>', '<%= postData.timeStamp %>')"><i class="la la-bookmark" ></i></button></li>
+                                                    </ul>
+                                                <% } %>
+                                            </div>
+                                            <div class="job_descp">
+                                                <h4 style="padding-bottom: 10px;">“<%= postData.title %>”</h4>
+                                                <p> Timing : <%= postData.planTime %></p>
+                                                <p><%= postData.description %></p>
+                                                <p><i class="la la-map-marker"></i><%= postData.planLocation %></p>
+                                                <ul class="skill-tags">
+                                                    <li><a href="javascript:void(0);" title=""><%= postData.planCategoryname %></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="comment-section">
+                                            <ul class="like-com">
+                                                <li id="<%= postData._id %>">
+                                                    <% if(likesArray.includes(userId)){ %>
+                                                        <a href="javascript:void(0);" onclick="unlikePost('<%= postData._id %>', '<%=  postData.likesCount %>')"  class="com likedColor <%= postData._id %>">
+                                                            <i class="fas fa-heart active"></i> 
+                                                            <small id="likesCounter"> 
+                                                                <%=  postData.likesCount %> likes
+                                                            </small>
+                                                        </a>
+                                                    <% }else{ %>
+                                                        <a href="javascript:void(0);" onclick="likePost('<%= postData._id %>', '<%=  postData.likesCount %>')"  class="com <%= postData._id %>">
+                                                            <i class="fas fa-heart active"></i> 
+                                                            <small id="likesCounter"> 
+                                                                <%=  postData.likesCount %> likes
+                                                            </small>
+                                                        </a>
+                                                    <% } %>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:void(0);" onclick="loadComment('<%= postData._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  postData.commentCount %> comments</a>
+                                                </li>
+                                            </ul>
+                                            <div class="comment-sec" id="<%= postData._id %>list" style="display: none;">
+                                                <ul>
+                                                    <li>
+                                                        <div class="comment-list">
+                                                            <div class="bg-img">
+                                                                <img src="images/resources/bg-img1.png" alt="">
+                                                            </div>
+                                                            <div class="comment">
+                                                                <h3>John Doe</h3>
+                                                                <span><img src="images/clock.png" alt=""> 3 min ago</span>
+                                                                <p>Lorem ipsum dolor sit amet, </p>
+                                                                <a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="comment-list">
+                                                            <div class="bg-img">
+                                                                <img src="images/resources/bg-img3.png" alt="">
+                                                            </div>
+                                                            <div class="comment">
+                                                                <h3>John Doe</h3>
+                                                                <span><img src="images/clock.png" alt=""> 3 min ago</span>
+                                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
+                                                                <a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="post-comment" id="<%= postData._id %>box" style="display: none;">
+                                                <div class="comment_box">
+                                                    <form>
+                                                        <input type="text" placeholder="Post a comment">
+                                                        <button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</main>

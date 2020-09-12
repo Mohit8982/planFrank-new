@@ -1,0 +1,68 @@
+</div>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/popper.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.mCustomScrollbar.js"></script>
+<script type="text/javascript" src="/lib/slick/slick.min.js"></script>
+<script type="text/javascript" src="/js/scrollbar.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+<script type="text/javascript" src="/js/script.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script>
+    var socket = io();
+    (function () {
+        socket.on('newPlan', function (data) {
+            $(".bottom-160").css('display','block')
+        });
+    })();
+
+    $(document).ready(function() 
+    {
+        $.ajax({
+            type: "post",
+            url: "/newsFeed/intrestList",
+            success: function (response) {
+                let options = `<option value="0">Select Plan Category</option>`
+                let intrestData = response.data;
+                intrestData.forEach(e => {
+                    options += `<option value="${e._id}||${e.intrest_name}">${e.intrest_name}</option>`
+                });
+                $("#planCategory").html(options)
+            },
+            error: function (e) {
+                alert("Contact Support Partner: " + JSON.stringify(e));
+            }
+        });
+    
+        $.ajax({
+                type: "post",
+                url: "/newsFeed/trendingPlan",
+                success: function (response) {
+                    const planData = response.data;
+                    let postData ='';
+                    planData.forEach(e => {
+                        postData +=	`<div class="user-profy slick-slide" style="width: 280px;" data-slick-index="4" aria-hidden="true" tabindex="-1">
+                            <img src="images/resources/user2.png" alt="">
+                            <h3>${e.postedBy.name}</h3>
+                            <span>${e.postedFrom}</span>
+                            <ul class="skill-tags">
+                                <li><a href="javascript:void(0);" title="">Sports</a></li>
+                            </ul>
+                            <a href="/plan/singlePlan/${e._id}" title="" tabindex="-1">View Plan</a>
+                        </div>`
+                    });
+                    $("#trendingPlans").html(postData)
+                    initilize()
+                },
+                error: function (e) {
+                    alert("Contact Support Partner: " + JSON.stringify(e));
+                }
+        });
+    
+        getpinPost()
+    });
+</script>
+</body>
+</html>

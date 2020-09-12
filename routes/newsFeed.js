@@ -62,6 +62,10 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
             await intrest.updateOne({_id : category_id},{ $inc : { intrest_count : 1 } });
             userInfo.totalPost = totalPost + 1;
+
+            const io = req.io;
+    		io.emit("newPlan", postData);
+
             return res.json({
                 status : 1,
                 message : "Success",

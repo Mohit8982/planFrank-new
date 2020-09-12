@@ -1,7 +1,39 @@
 $(window).on("load", function() {
     "use strict";
 
-    
+    $('#planSubmit').submit(function() {
+        $(this).ajaxSubmit({
+            error: function(xhr) {
+                status('Error: ' + xhr.status);
+            },
+            success: function(response) {
+                let status = response.status;
+                if(status == 1)
+                {
+                    $(".post-popup.pst-pj").removeClass("active");
+                    $(".wrapper").removeClass("overlay");
+
+                    return false;
+                }
+                else if(status == 0)
+                {
+                    $("#errText").html(response.message)
+                }
+                else if(status == 3){
+                    let errorData = response.errors;
+                    let html = ''
+                    $.each(errorData, function (key, e) 
+                    {
+                        html += `<li> ${e} </li>`
+                    })
+                    $("#errText").html(html)
+                }
+            }
+        });
+        return false;
+    });
+
+
 
     //  ============= POST PROJECT POPUP FUNCTION =========
 
@@ -15,20 +47,6 @@ $(window).on("load", function() {
         $(".wrapper").removeClass("overlay");
         return false;
     });
-
-    //  ============= POST JOB POPUP FUNCTION =========
-
-    $(".post-jb").on("click", function(){
-        $(".post-popup.job_post").addClass("active");
-        $(".wrapper").addClass("overlay");
-        return false;
-    });
-    $(".post-project > a").on("click", function(){
-        $(".post-popup.job_post").removeClass("active");
-        $(".wrapper").removeClass("overlay");
-        return false;
-    });
-
     //  ============= SIGNIN CONTROL FUNCTION =========
 
     $('.sign-control li').on("click", function(){
@@ -60,13 +78,6 @@ $(window).on("load", function() {
         $(this).addClass('active animated fadeIn');
         $("#"+tab_id).addClass('current animated fadeIn');
         return false;
-    });
-
-    //  ============= COVER GAP FUNCTION =========
-
-    var gap = $(".container").offset().left;
-    $(".cover-sec > a, .chatbox-list").css({
-        "right": gap
     });
 
     //  ============= OVERVIEW EDIT FUNCTION =========
@@ -262,8 +273,8 @@ $(".user-info").on("click", function(){$("#users").hide();
 });
 
 
-function initilize(){
-    $('.profiles-slider').slick({
+    function initilize(){
+        $('.profiles-slider').slick({
                 slidesToShow: 3,
                 slck:true,
                 slidesToScroll: 1,
@@ -298,5 +309,110 @@ function initilize(){
                 }
             ]
             });
-   }
+    }
 
+   function likePost(postId, count){
+    let totalCount = parseInt(count) + 1;
+    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/likeUnlike",
+        data :{type : 1, postId : postId},
+        success: function (response) {
+            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function unlikePost(postId, count){
+    let totalCount = parseInt(count) - 1;
+    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+    setTimeout(function(){ 
+        $.ajax({
+            type: "post",
+            url: "/newsFeed/likeUnlike",
+            data :{type : 2, postId : postId},
+            success: function (response) {
+                $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+            },
+            error: function (e) {
+                alert("Contact Support Partner: " + JSON.stringify(e));
+            }
+        });
+    }, 3000);
+}
+
+function tempUnlikePost(postId, count){
+    let totalCount = parseInt(count) - 1;
+    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+}
+
+function tempLike(postId, count){
+    let totalCount = parseInt(count) + 1;
+    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+}
+
+function loadComment(postId){
+    $(`#${postId}box`).css("display", "block");
+    $(`#${postId}list`).css("display", "block");
+    // $.ajax({
+    // 	type: "post",
+    // 	url: "/newsFeed/comments",
+    // 	data :{postId : postId},
+    // 	success: function (response) {
+
+    // 	},
+    // 	error: function (e) {
+    // 		alert("Contact Support Partner: " + JSON.stringify(e));
+    // 	}
+    // });
+}
+
+function getpinPost(){
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/getPinPost",
+        success: function (response) {
+            let postData = response.data;
+            let html = ''
+            postData.forEach(element => {
+                html += `<div class="suggestion-usd">
+                    <div class="sgt-text">
+                        <h4>${element.post_id.title}</h4>
+                        <span>${element.post_id.postedFrom}</span>
+                    </div>
+                </div>`
+            });
+            html += `<div class="view-more"><a href="#" title="">View More</a></div>`
+            $("#pinnedPostDiv").html(html);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function pinPost(postId, timeStamp){
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/pinPost",
+        data :{postId : postId, planStamp : timeStamp},
+        success: function (response) {
+            console.log(response)
+            $(`#unPin${postId}`).remove()
+            let postData = response.data;
+            $("#pinnedPostDiv").prepend(`<div class="suggestion-usd">
+                <div class="sgt-text">
+                    <h4>${postData.title}</h4>
+                    <span>${postData.postedFrom}</span>
+                </div>
+            </div>`);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}

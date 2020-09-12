@@ -5,12 +5,19 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const redis = require("redis");
-const session = require("express-session");
+const path = require("path");
+const redis = require('redis');
+const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
 let redisClient = redis.createClient(6379, 'srv-captain--rediscache', { password: 'monty123' });
-// const redisClient = redis.createClient();
-const path = require("path");
+//let redisClient = redis.createClient();
+const http = require('http');
+const server = http.createServer(app);
+const io = require('socket.io')(server,{
+	pingTimeout: 60000,
+});
+// const redis_socket = require('socket.io-redis');
+// io.adapter(redis_socket({ host: 'localhost', port: 6379 }));
 
 //Connect To DB
 dotenv.config();
@@ -47,6 +54,12 @@ app.use(
 	})
 );
 
+app.use(function(req, res, next) {
+    req.io = io;
+    next();
+});
+
+
 redisClient.on("error", (err) => {
 	console.log(err);
 });
@@ -64,17 +77,14 @@ app.set("view engine", "ejs");
 const index = require('./routes/index');
 const auth = require('./routes/auth');
 const newsFeed = require('./routes/newsFeed');
+const individual = require('./routes/individual');
 
 app.use('/', index);
 app.use('/auth', auth);
-app.use('/newsFeed', newsFeed)
-
-app.get("/", async (req, res)=>{
-
-	
-})
+app.use('/newsFeed', newsFeed);
+app.use('/plan', individual);
 
 const port = process.env.port || 5000;
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log(`Running on PORT ${port} `);
 });
