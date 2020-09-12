@@ -1606,6 +1606,7 @@ main {
 
 .comment-sec {
 	float: left;
+	margin: 10px;
 	width: 100%;
 }
 .comment-sec ul {

@@ -67,7 +67,6 @@
 												</div>
 											</div>
 										</div>
-										
 										<% 
 											let userId = userInfo.userId;  
 											for(index in feedData) { 
@@ -442,17 +441,17 @@
 		function loadComment(postId){
 			$(`#${postId}box`).css("display", "block");
 			$(`#${postId}list`).css("display", "block");
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/likeUnlike",
-				data :{type : 2, postId : postId},
-				success: function (response) {
+			// $.ajax({
+			// 	type: "post",
+			// 	url: "/newsFeed/comments",
+			// 	data :{postId : postId},
+			// 	success: function (response) {
 
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
+			// 	},
+			// 	error: function (e) {
+			// 		alert("Contact Support Partner: " + JSON.stringify(e));
+			// 	}
+			// });
 		}
 		
 		function getpinPost(){
