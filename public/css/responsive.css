@@ -149,12 +149,20 @@
 		position: relative;
 		margin-top: 0px;
 	}
-	.user-info a {display: none}
+
+	.headerLogo{
+		text-align: center;
+		font-size: 30px;
+		color: #ffffff;
+		padding-top: 11px;
+	}
+
+
 	.login-resources ul li {margin-bottom: 7px;}
-	.logo {width: 62%;text-align: center;}
+	.logo {width: 38%;text-align: center;}
 	.logo img {float: none;}
 	.search-bar {width: 100%;}
-	.user-account {float: right;margin-right: -45px;padding: 11px 0px 0px 0px;}
+	.user-account {float: right;padding: 11px 0px 0px 0px;}
 	.cm_img {width: 100%;text-align: center;margin-bottom: 10px;}
 	.cm_img img {float: none;}
 	.comment_box {width: 100%;}
