@@ -152,20 +152,23 @@
 
 	.bottom-scroll {
 		position: fixed;
-    right: 15%;
-    bottom: 83%;
-    z-index: 999;
-    background: #ff546a;
-    cursor: pointer;
-    display: flex;
-    width: 68%;
-    height: 48px;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    color: #ffffff;
-    border-radius: 50px;
-
+		right: 15%;
+		bottom: 83%;
+		z-index: 999;
+		background: #ff546a;
+		cursor: pointer;
+		display: flex;
+		width: 68%;
+		height: 48px;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+		color: #ffffff;
+		border-radius: 50px;
+		padding: 15px 0px 0px 0px;
+	}
+	.coloe{
+		color:  #fff;
 	}
 
 	.headerLogo{
