@@ -36,6 +36,11 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             let postedFrom = 'Location Not Available';
 
+            console.log(req.headers['x-forwarded-for'])
+            console.log(req.connection.remoteAddress)
+            console.log(req.socket.remoteAddress)
+            console.log(req.connection.socket)
+            console.log(req.connection.socket.remoteAddress)
             console.log(ip)
 
             const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
