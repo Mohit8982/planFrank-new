@@ -440,36 +440,43 @@
 		function likePost(postId, count){
 			let totalCount = parseInt(count) + 1;
 			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/likeUnlike",
-				data :{type : 1, postId : postId},
-				success: function (response) {},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
+
+			setTimeout(function(){ 
+				$.ajax({
+					type: "post",
+					url: "/newsFeed/likeUnlike",
+					data :{type : 1, postId : postId},
+					success: function (response) {},
+					error: function (e) {
+						alert("Contact Support Partner: " + JSON.stringify(e));
+					}
+				});
+			}, 3000);
 		}
 
 		function unlikePost(postId, count){
 			let totalCount = parseInt(count) - 1;
 			$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-			$.ajax({
-				type: "post",
-				url: "/newsFeed/likeUnlike",
-				data :{type : 2, postId : postId},
-				success: function (response) {
+			setTimeout(function(){ 
+				$.ajax({
+					type: "post",
+					url: "/newsFeed/likeUnlike",
+					data :{type : 2, postId : postId},
+					success: function (response) {
 
-				},
-				error: function (e) {
-					alert("Contact Support Partner: " + JSON.stringify(e));
-				}
-			});
+					},
+					error: function (e) {
+						alert("Contact Support Partner: " + JSON.stringify(e));
+					}
+				});
+			}, 3000);
 		}
 
 		function loadComment(postId){
 			$(`#${postId}box`).css("display", "block");
 			$(`#${postId}list`).css("display", "block");
+
+
 
 			$.ajax({
 				type: "post",
