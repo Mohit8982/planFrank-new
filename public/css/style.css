@@ -1609,6 +1609,11 @@ main {
     font-size: 13px;
 	color: #ff546a;
 	border-radius: 50px;
+	padding: 15px 0px 0px 0px;
+}
+
+.coloe{
+	color: #fff;
 }
 
 .plus-ic i {
