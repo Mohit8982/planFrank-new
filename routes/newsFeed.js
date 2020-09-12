@@ -28,7 +28,6 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
         const todayDate = moment().format('YYYY-MM-DD');
         const checkDate = moment(planDate).isBefore(todayDate);
-        console.log(planTimeStart)
         const timeStart = moment(planTimeStart, "hh:mm").format("hh:mm a");
         const timeEnd = moment(planTimeEnd, "hh:mm").format("hh:mm a");
         if(checkDate == false)
@@ -40,7 +39,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             console.log(req.connection.remoteAddress)
             console.log(req.socket.remoteAddress)
             console.log(req.connection.socket)
-            console.log(req.connection.socket.remoteAddress)
+            console.log(req.connection)
             console.log(ip)
 
             const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
