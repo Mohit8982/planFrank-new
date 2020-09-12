@@ -27,7 +27,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const totalPost = userInfo.userId;
         const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
         let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
-        ip = '27.5.7.160';
+        // ip = '27.5.7.160';
         const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
         const locality =  await getLocation(link);
         const city = locality.city; 
@@ -157,8 +157,6 @@ router.post('/likeUnlike', session, async (req, res)=>{
         })
     }
 })
-
-
 
 async function getLocation(link)
 {
