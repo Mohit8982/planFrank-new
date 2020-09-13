@@ -282,7 +282,9 @@
 		let user_id = '<%= userInfo.userId %>';
 		$(".main-ws-sec").on("scroll", function () {
 			let div = $(this).get(0);
-			if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+			if (div.scrollTop + div.clientHeight + 100 >= div.scrollHeight) {
+
+				console.log(div.scrollTop + div.clientHeight - 100 ," = ", div.scrollHeight)
 
 				console.log('div.scrollTop', div.scrollTop)
 				console.log('div.clientHeight', div.clientHeight)
