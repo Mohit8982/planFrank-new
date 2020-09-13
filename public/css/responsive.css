@@ -1,6 +1,25 @@
-
-
 @media (max-width: 1200px) {
+	.coloe{
+		color: #fff 
+	}
+	.bottom-scroll {
+		margin: auto;
+	    position: fixed;
+		right: 37%;
+		bottom: 88%;
+		z-index: 999;
+		background: #ff546a;
+		cursor: pointer;
+		display: flex;
+		width: auto;
+		height: 48px;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+		color: #ffffff;
+		border-radius: 50px;
+		padding: 15px 0px 0px 0px;
+	}
 	header nav {position: fixed;top: 0;left: 0;width: 200px;height: 100%;background-color: #ff546a;padding: 25px 20px;opacity: 0;visibility: hidden;z-index: 0}
 	header nav.active {opacity: 1;visibility: visible;z-index: 9999;}
 	header nav ul li {float: left;width: 100%;text-align: left;padding: 0 0 0 0;margin-bottom: 20px;}
@@ -52,6 +71,29 @@
 
 
 @media (max-width: 991px) {
+	.coloe{
+		color: #fff 
+	}
+
+	.bottom-scroll {
+		margin: auto;
+	    position: fixed;
+		right: 25%;
+		bottom: 88%;
+		z-index: 999;
+		background: #ff546a;
+		cursor: pointer;
+		display: flex;
+		width: auto;
+		height: 48px;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+		color: #ffffff;
+		border-radius: 50px;
+		padding: 15px 0px 0px 0px;
+	}
+
 	.sgt-text span {font-size: 14px;}
 	main {padding: 20px 0 60px 0;}
 	.user-specs span {font-size: 13px;}
@@ -65,7 +107,7 @@
 	.social_links li a {font-size: 13px;}
 	.footy-sec.mn ul li {margin-bottom: 10px;}
 	.user-pro-img > a {left: 56%;}
-	.no-pd {padding: 0;}
+	.no-pd {padding: 0;width: 100%!important;max-width:100%}
 	.footy-sec ul li {margin-bottom: 10px;}
 	.cm-logo {padding-left: 0;}
 	.signin-pop::before {display: none;}
@@ -101,6 +143,29 @@
 
 
 @media (max-width: 768px) {
+
+	.bottom-scroll {
+		margin: auto;
+	    position: fixed;
+		right: 22%;
+		bottom: 88%;
+		z-index: 999;
+		background: #ff546a;
+		cursor: pointer;
+		display: flex;
+		width: auto;
+		height: 48px;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+		color: #ffffff;
+		border-radius: 50px;
+		padding: 15px 0px 0px 0px;
+	}
+
+	.coloe{
+		color:  #fff#fff;
+
 	.signin-pop {
 		float: left;
 		width: 100%;
@@ -156,14 +221,15 @@
 	}
 
 	.bottom-scroll {
+		margin: auto;
 		position: fixed;
 		right: 15%;
-		bottom: 83%;
+		bottom: 88%;
 		z-index: 999;
 		background: #ff546a;
 		cursor: pointer;
 		display: flex;
-		width: 68%;
+		width: auto;
 		height: 48px;
 		align-items: center;
 		justify-content: center;
@@ -172,8 +238,7 @@
 		border-radius: 50px;
 		padding: 15px 0px 0px 0px;
 	}
-	.coloe{
-		color:  #fff;
+	.c#fffo
 		margin-left: 22px;
 	}
 
@@ -267,6 +332,10 @@
 }
 
 @media (max-width: 410px) {
+	.coloe{
+		color: #fff 
+	}
+
 	.disp{
 		margin-left: 17%;
 	}

@@ -1,7 +1,6 @@
 <% layout('./layout') %>
-<div class="bottom-scroll bottom-160" style="display: none;">
-		<a href="/" class="coloe">Yayyy someone Posted a new Plan...!!!!</a>
-		&nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-down"></i>
+<div class="bottom-scroll bottom-160" style="display: block;">
+	<a href="/" class="coloe">Yayyy someone Posted a new Plan...!!!!</a>
 </div>
 <main>
 	<div class="main-section">
@@ -153,7 +152,6 @@
 							</div>
 						</div>
 					</div>
-					
 					<div class="col-lg-4 pd-right-none no-pd">
 						<div class="right-sidebar">
 							<div class="user-data full-width">
@@ -283,13 +281,6 @@
 		$(".main-ws-sec").on("scroll", function () {
 			let div = $(this).get(0);
 			if (div.scrollTop + div.clientHeight + 100 >= div.scrollHeight) {
-
-				console.log(div.scrollTop + div.clientHeight - 100 ," = ", div.scrollHeight)
-
-				console.log('div.scrollTop', div.scrollTop)
-				console.log('div.clientHeight', div.clientHeight)
-				console.log('div.scrollHeight', div.scrollHeight)
-
 				$("#loaderPost").css("display", "block");
 				var skipNumber = parseInt($("#scrollValue").val());
 				fetch("/newsFeed/nextPost", {

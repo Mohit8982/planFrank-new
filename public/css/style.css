@@ -1626,6 +1626,7 @@ main {
 }
 
 .bottom-scroll {
+	margin: auto;
     position: fixed;
     right: 45%;
     bottom: 88.4%;
@@ -1633,7 +1634,7 @@ main {
     background:#fff;
     cursor: pointer;
     display: flex;
-    width: 18%;
+    width: auto;
     height: 48px;
     align-items: center;
     justify-content: center;
@@ -1645,7 +1646,7 @@ main {
 
 .coloe{
 	color:  #ff546a;
-	margin-left: 22px;
+	padding: 40px;
 }
 
 .plus-ic i {
