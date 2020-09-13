@@ -11,7 +11,7 @@ const { createPlan, validate} = require('../helper/validation');
 router.get("/", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
-        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({_id: -1}).limit(10);
+        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1}).limit(10);
         res.render('./newsFeed', {title : "Plan's" , userInfo : userInfo, feedData : findIntrest})
     }catch(error){
         res.json({
