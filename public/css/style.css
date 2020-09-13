@@ -69,10 +69,14 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+
+
+
 body {
 	line-height: 1;
 	font-family: 'Source Sans Pro', sans-serif;
-	overflow-x: hidden;
+	overflow: hidden;
 	font-weight: 400;
 	background-color: #f2f2f2;
 }
@@ -971,7 +975,21 @@ main {
 .main-ws-sec {
 	float: left;
 	width: 100%;
+	height: calc(90vh - 0px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+
+.main-ws-sec::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.main-ws-sec {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 
 /* ============ post-topbar =========== */
 
@@ -1523,12 +1541,24 @@ main {
 .posty {
 	float: left;
 	width: 100%;
-	padding: 10px 0px;
+	padding: 10px 0px 23px 0px;
 }
 .posty .job-status-bar {
 	border-bottom: 1px solid #e4e4e4;
 	padding-bottom: 20px;
 }
+
+.disp{
+	text-align: center;
+	padding: 14px 0 14px 0;
+	background: white;
+	color: chocolate;
+	border-radius: 40px;
+	margin-bottom: 10px;
+	width: 200px;
+	margin-left: 37%;
+}
+
 .slick-previous:before {
 	left: -14px;
 	content: '\f104';
@@ -1545,6 +1575,7 @@ main {
 	color: #b7b7b7;
 	position: absolute;
 	top: 50%;
+	z-index: 1;
 	line-height: 27px;
 	-webkit-transform: translateY(-50%);
 	-moz-transform: translateY(-50%);
@@ -1552,7 +1583,7 @@ main {
 	-o-transform: translateY(-50%);
 	transform: translateY(-50%);
 	font-family: fontawesome;
-	width: 30px;
+	width: 50px;
 	height: 30px;
 	background-color: #fff;
 	-webkit-border-radius: 100px;
@@ -1754,7 +1785,7 @@ main {
 	float: left;
 	width: 100%;
 	text-align: center;
-	padding-top: 40px;
+	padding: 0px 0px 50px 0px;
 }
 .process-comm img {
 	float: none;
@@ -1766,7 +1797,21 @@ main {
 .right-sidebar {
 	float: left;
 	width: 100%;
+	height: calc(89vh - 0px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
+
+.right-sidebar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.right-sidebar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .widget {
 	float: left;
 	width: 100%;
@@ -6883,4 +6928,78 @@ ul#myTab {
     line-height: 24px;
     font-size: 14px;
     color: #666666;
+}
+
+.loader-box {
+	display: flex;
+	justify-content: center;
+	margin: 15px 0;
+}
+
+.spinner-box {
+	width: 50px;
+	height: 50px;
+	background-color: #fff;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid #ddd;
+	box-shadow: -2px 3px 12px #ccc;
+}
+.spinner-container {
+	-webkit-animation: rotate 2s linear infinite;
+	animation: rotate 2s linear infinite;
+	z-index: 2;
+	width: 28px;
+	height: 28px;
+}
+
+.spinner-container .path {
+	stroke-dasharray: 1, 150; /* 1%, 101% circumference */
+	stroke-dashoffset: 0;
+	stroke: #ff4477;
+	stroke-linecap: round;
+	-webkit-animation: dash 1.5s ease-in-out infinite;
+	animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+@-webkit-keyframes rotate {
+	100% {
+		-webkit-transform: rotate(360deg);
+	}
+}
+
+@keyframes dash {
+	0% {
+		stroke-dasharray: 1, 150; /* 1%, 101% circumference */
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 90, 150; /* 70%, 101% circumference */
+		stroke-dashoffset: -35; /* 25% circumference */
+	}
+	100% {
+		stroke-dasharray: 90, 150; /* 70%, 101% circumference */
+		stroke-dashoffset: -124; /* -99% circumference */
+	}
+}
+@-webkit-keyframes dash {
+	0% {
+		stroke-dasharray: 1, 150; /* 1%, 101% circumference */
+		stroke-dashoffset: 0;
+	}
+	50% {
+		stroke-dasharray: 90, 150; /* 70%, 101% circumference */
+		stroke-dashoffset: -35; /* 25% circumference */
+	}
+	100% {
+		stroke-dasharray: 90, 150; /* 70%, 101% circumference */
+		stroke-dashoffset: -124; /* -99% circumference */
+	}
 }

@@ -141,6 +141,11 @@
 
 
 @media (max-width: 576px) {
+
+	.disp{
+		margin-left: 24%;
+	}
+
 	.signin-pop {margin-bottom: 40px;}
 	.signin-pop {
 		float: left;
@@ -262,6 +267,9 @@
 }
 
 @media (max-width: 410px) {
+	.disp{
+		margin-left: 17%;
+	}
 	.post-st ul li a {font-size: 12px;padding: 0 6px;}
 	.like-com li a {font-size: 12px;}
 	.job_descp h3 {font-size: 16px;}

@@ -232,6 +232,37 @@ router.post('/getPinPost', session, async (req, res)=>{
     }
 });
 
+router.post("/nextPost", session, async (req, res)=>{
+    try {
+        const userInfo = req.session.details;
+        const skipValue = req.body.skipNumber;
+        const findIntrest = await createPost
+                            .find()
+                            .populate('postedBy', {name : 1, username : 1})
+                            .sort({_id: -1})
+                            .skip(skipValue)
+                            .limit(10);
+        if(findIntrest){
+            res.json({
+                status : 1,
+                message :"ok",
+                feedData : findIntrest
+            })
+        }else{
+            res.json({
+                status : 2,
+                message :"No More Plan Available"
+            })
+        }
+    }catch(error){
+        res.json({
+            status : 0,
+            message :`Server Error : ${error.toString()}`
+        })
+    }
+});
+
+
 async function getLocation(link)
 {
     let dataProvider;

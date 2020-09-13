@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-lg-8 col-md-8 no-pd">
 						<div class="main-ws-sec">
-							<div class="posts-section">
+							<div class="posts-section" id="divScroll">
 								<div class="top-profiles">
 									<div class="pf-hd">
 										<h3>Trending Plan's</h3>
@@ -23,7 +23,8 @@
 										</div>
 									</div>
 								</div>
-								<% 
+								<div id="allPost">
+									<% 
 									let userId = userInfo.userId;
 									for(index in feedData) { 
 										let likesArray = feedData[index].likes;
@@ -127,16 +128,32 @@
 										</div>
 									</div>
 								<% } %>
-								<div class="process-comm">
-									<div class="spinner">
-										<div class="bounce1"></div>
-										<div class="bounce2"></div>
-										<div class="bounce3"></div>
+								</div>
+								<div class="posty" id="noDataBlock" style="display:none">
+									<div class="disp">
+										No More Plan's Available
+									</div>
+								</div>
+								<div class="process-comm" id="loaderPost" style="display: none;">
+									<div class="loader-box text-center">
+										<div class="spinner-box">
+											<svg class="spinner-container" viewBox="0 0 44 44">
+												<circle
+													class="path"
+													cx="22"
+													cy="22"
+													r="20"
+													fill="none"
+													stroke-width="4"
+												></circle>
+											</svg>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
+					
 					<div class="col-lg-4 pd-right-none no-pd">
 						<div class="right-sidebar">
 							<div class="user-data full-width">
@@ -258,3 +275,132 @@
 		<a href="javascript:void(0);" title=""><i class="la la-times-circle-o"></i></a>
 	</div>
 </div>
+
+<input type="hidden" value="10" id="scrollValue" />
+
+<script>
+		let user_id = '<%= userInfo.userId %>';
+		$(".main-ws-sec").on("scroll", function () {
+			let div = $(this).get(0);
+			if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+				$("#loaderPost").css("display", "block");
+				var skipNumber = parseInt($("#scrollValue").val());
+				fetch("/newsFeed/nextPost", {
+					method: "POST",
+					body: JSON.stringify({ skipNumber: skipNumber }),
+					headers: {
+						"Content-Type": "application/json",
+					},
+					credentials: "same-origin",
+				})
+				.then((res) => res.json())
+				.then((resp) => {
+					const status = resp.status;
+					switch (status) {
+						case 1:
+							let postData = resp.feedData;
+							let html='';
+
+							if(Object.keys(postData).length > 0)
+							{
+								postData.forEach( e => {
+								let arrayLikes = e.likes;
+								let arrayPin = e.Pinned;
+								let id_post = e._id;
+								let pinDiv = '';
+								let likeDiv = ''
+								if(!arrayPin.includes(user_id)){
+									pinDiv = `<ul class="bk-links">
+										<li id="unPin${ e._id }"><button style="border-radius: revert;" onclick="pinPost('${ e._id }', '${ e.timeStamp }')"><i class="la la-bookmark" ></i></button></li>
+									</ul>`
+								}
+
+								if(arrayLikes.includes(user_id)){ 
+									likeDiv = `<a href="javascript:void(0);" onclick="unlikePost('${ e._id }', '${  e.likesCount }')"  class="com likedColor ${ e._id }">
+										<i class="fas fa-heart active"></i> 
+										<small id="likesCounter"> 
+											${  e.likesCount } likes
+										</small>
+									</a>`
+									}
+								else{ 
+									likeDiv = `<a href="javascript:void(0);" onclick="likePost('${ e._id }', '${  e.likesCount }')"  class="com ${ e._id }">
+										<i class="fas fa-heart active"></i> 
+										<small id="likesCounter"> 
+											${  e.likesCount } likes
+										</small>
+									</a>`
+								}
+
+								html += `<div class="posty">
+										<div class="post-bar no-margin">
+											<div class="post_topbar">
+												<div class="usy-dt">
+													<img src="/logoSmall.png" height="50" alt="">
+													<div class="usy-name">
+														<h3>${e.postedBy.name}</h3>
+														<span><img src="images/clock.png" alt="">
+															${ e.createdAt }
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class="epi-sec">
+												<ul class="descp">
+													<li><img src="images/icon9.png" alt=""><span>${ e.postedFrom }</span></li>
+												</ul>${pinDiv}</div>
+											<div class="job_descp">
+												<h4 style="padding-bottom: 10px;">“${ e.title }”</h4>
+												<p> Timing : ${ e.planTime }</p>
+												<p>${ e.description }</p>
+												<p><i class="la la-map-marker"></i>${ e.planLocation }</p>
+												<ul class="skill-tags">
+													<li><a href="javascript:void(0);" title="">${ e.planCategoryname }</a></li>
+												</ul>
+											</div>
+										</div>
+										<div class="comment-section">
+											<ul class="like-com">
+												<li id="${ e._id }">
+													${likeDiv}
+												</li>
+												<li>
+													<a href="javascript:void(0);" onclick="loadComment('${ e._id }')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;${  e.commentCount } comments</a>
+												</li>
+											</ul>
+											<div class="comment-sec" id="${ e._id }list" style="display: none;">
+											</div>
+											<div class="post-comment" id="${ e._id }box" style="display: none;">
+												<div class="comment_box">
+													<form>
+														<input type="text" placeholder="Post a comment">
+														<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>`;
+
+									// console.log(html)
+
+							});
+
+								$("#allPost").append(html)
+								$("#loaderPost").css("display", "none");
+								$("#scrollValue").val(skipNumber + 10);
+							}
+							else{
+								$("#noDataBlock").css("display","block")
+								$("#loaderPost").remove();
+							}
+							break;
+						case 2:
+							
+							break;
+						default:
+							break;
+					}
+				});
+			}
+		});
+</script>
