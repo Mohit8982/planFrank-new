@@ -22,12 +22,12 @@
     {
         $.ajax({
             type: "post",
-            url: "/newsFeed/intrestList",
+            url: "/newsFeed/InterestList",
             success: function (response) {
                 let options = `<option value="0">Select Plan Category</option>`
-                let intrestData = response.data;
-                intrestData.forEach(e => {
-                    options += `<option value="${e._id}||${e.intrest_name}">${e.intrest_name}</option>`
+                let InterestData = response.data;
+                InterestData.forEach(e => {
+                    options += `<option value="${e._id}||${e.Interest_name}">${e.Interest_name}</option>`
                 });
                 $("#planCategory").html(options)
             },

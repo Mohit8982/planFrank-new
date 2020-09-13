@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const singlePost = require("../model/Post");
 const session = require('../helper/session');
-const intrest = require('../model/Plan_category');
+const Interest = require('../model/Plan_category');
 
 router.get("/singlePlan/:id", session, async (req, res)=>{
     try {
@@ -20,8 +20,8 @@ router.get("/singlePlan/:id", session, async (req, res)=>{
 router.get("/makePlan", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
-        const intrestList = await intrest.find();
-        res.render('./makePlan', {title : "Create New Plan", userInfo : userInfo, intrestList : intrestList})
+        const InterestList = await Interest.find();
+        res.render('./makePlan', {title : "Create New Plan", userInfo : userInfo, InterestList : InterestList})
     } catch (error) {
         res.json({
             status : 0,

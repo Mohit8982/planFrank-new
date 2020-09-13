@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema;
 
-const intrestSchema = new mongoose.Schema({
-	intrest_name: {
+const InterestSchema = new mongoose.Schema({
+	Interest_name: {
 		type: String,
 		trim: true,
 		required: true,
     },
-    intrest_count: Number,
+    Interest_count: Number,
 	timestamp:{
 		type: Number,
         required: true,
@@ -23,4 +23,4 @@ const intrestSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Intrest", intrestSchema);
+module.exports = mongoose.model("Interest", InterestSchema);

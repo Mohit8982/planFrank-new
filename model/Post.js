@@ -48,8 +48,8 @@ const postSchema = new mongoose.Schema({
 	likesCount : Number,
 	PinnedCount : Number,
 	Pinned : [{ type: ObjectId, ref: "User" }],
-	intrestedPeople : [{type: ObjectId}],
-	intrestedCount: Number,
+	InterestedPeople : [{type: ObjectId}],
+	InterestedCount: Number,
 	likes: [{ type: ObjectId, ref: "User" }],
 	createdAt: {
 		type: String,

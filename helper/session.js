@@ -1,9 +1,16 @@
 const jwt = require('jsonwebtoken');
+const checkUser = require('../model/User');
 
-module.exports = function (req,res,next) {
+module.exports = async function (req,res,next) {
     try
     {
         const token = req.session.token;
+        const userInfo = req.session.details;
+        const userId =  userInfo.userId;
+        const user = await checkUser.findOne({_id : userId, verified : true})
+        if(user == null){
+            res.redirect('/');
+        }
         if (token == null){
             return res.redirect('/');
         }
@@ -14,9 +21,9 @@ module.exports = function (req,res,next) {
                 } 
                 else {
                     req.auth = decoded 
-                    next()                        
+                    next()
                 }
-            });    
+            });
         }
     }
     catch (e) {

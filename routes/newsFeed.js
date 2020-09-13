@@ -2,7 +2,7 @@ const router = require("express").Router();
 const createPost = require("../model/Post");
 const user = require("../model/User");
 const pinned = require("../model/Pinned_Post");
-const intrest = require("../model/Plan_category");
+const Interest = require("../model/Plan_category");
 const fetch = require("node-fetch");
 const moment = require("moment");
 const session = require('../helper/session');
@@ -11,8 +11,8 @@ const { createPlan, validate} = require('../helper/validation');
 router.get("/", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
-        const findIntrest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({_id : -1}).limit(10);
-        res.render('./newsFeed', {title : "Plan's" , userInfo : userInfo, feedData : findIntrest})
+        const findInterest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({_id : -1}).limit(10);
+        res.render('./newsFeed', {title : "Plan's" , userInfo : userInfo, feedData : findInterest})
     }catch(error){
         res.json({
             status : 0,
@@ -60,7 +60,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             })
             const postData = await Post.save();
             await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
-            await intrest.updateOne({_id : category_id},{ $inc : { intrest_count : 1 } });
+            await Interest.updateOne({_id : category_id},{ $inc : { Interest_count : 1 } });
             userInfo.totalPost = totalPost + 1;
 
             const io = req.io;
@@ -88,12 +88,12 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
     }
 });
 
-router.post('/createIntrest', async(req, res)=>{
+router.post('/createInterest', async(req, res)=>{
     try {
         const userid = req.session.details;
-        const { intrestName } = req.body;
-        const category = new intrest({
-            intrest_name: intrestName,
+        const { InterestName } = req.body;
+        const category = new Interest({
+            Interest_name: InterestName,
             timestamp: moment().unix(),
             createdOn: moment().format("DD/MM/YYYY hh:mm a"),
             createdBy : userid
@@ -111,9 +111,9 @@ router.post('/createIntrest', async(req, res)=>{
     }
 })
 
-router.post('/intrestList', session, async(req, res)=>{
+router.post('/InterestList', session, async(req, res)=>{
     try {
-        const list  = await intrest.find();
+        const list  = await Interest.find();
         res.json({
             status : 1,
             message : "Created Successfully...",
@@ -236,17 +236,17 @@ router.post("/nextPost", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
         const skipValue = req.body.skipNumber;
-        const findIntrest = await createPost
+        const findInterest = await createPost
                             .find()
                             .populate('postedBy', {name : 1, username : 1})
                             .sort({_id: -1})
                             .skip(skipValue)
                             .limit(10);
-        if(findIntrest){
+        if(findInterest){
             res.json({
                 status : 1,
                 message :"ok",
-                feedData : findIntrest
+                feedData : findInterest
             })
         }else{
             res.json({
