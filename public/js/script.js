@@ -1,6 +1,5 @@
 $(window).on("load", function() {
     "use strict";
-
     $('#planSubmit').submit(function() {
         $(this).ajaxSubmit({
             error: function(xhr) {
@@ -12,7 +11,8 @@ $(window).on("load", function() {
                 {
                     $(".post-popup.pst-pj").removeClass("active");
                     $(".wrapper").removeClass("overlay");
-
+                    $("#planSubmit").trigger("reset");
+                    $("#errText").html("Plan Published Successfully...")
                     return false;
                 }
                 else if(status == 0)
@@ -330,19 +330,17 @@ $(".user-info").on("click", function(){$("#users").hide();
 function unlikePost(postId, count){
     let totalCount = parseInt(count) - 1;
     $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-    setTimeout(function(){ 
-        $.ajax({
-            type: "post",
-            url: "/newsFeed/likeUnlike",
-            data :{type : 2, postId : postId},
-            success: function (response) {
-                $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-            },
-            error: function (e) {
-                alert("Contact Support Partner: " + JSON.stringify(e));
-            }
-        });
-    }, 3000);
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/likeUnlike",
+        data :{type : 2, postId : postId},
+        success: function (response) {
+            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
 }
 
 function tempUnlikePost(postId, count){
