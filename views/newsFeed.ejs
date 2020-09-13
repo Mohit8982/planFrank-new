@@ -283,6 +283,11 @@
 		$(".main-ws-sec").on("scroll", function () {
 			let div = $(this).get(0);
 			if (div.scrollTop + div.clientHeight >= div.scrollHeight) {
+
+				console.log('div.scrollTop', div.scrollTop)
+				console.log('div.clientHeight', div.clientHeight)
+				console.log('div.scrollHeight', div.scrollHeight)
+
 				$("#loaderPost").css("display", "block");
 				var skipNumber = parseInt($("#scrollValue").val());
 				fetch("/newsFeed/nextPost", {
