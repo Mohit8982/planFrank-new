@@ -47,6 +47,13 @@ $(window).on("load", function() {
         $(".wrapper").removeClass("overlay");
         return false;
     });
+
+    $("#cancelPlan").on("click", function(){
+        $(".post-popup.pst-pj").removeClass("active");
+        $(".wrapper").removeClass("overlay");
+        return false;
+    });
+
     //  ============= SIGNIN CONTROL FUNCTION =========
 
     $('.sign-control li').on("click", function(){
@@ -271,7 +278,6 @@ $(".user-info").on("click", function(){$("#users").hide();
         e.stopPropagation();
     });
 });
-
 
     function initilize(){
         $('.profiles-slider').slick({
