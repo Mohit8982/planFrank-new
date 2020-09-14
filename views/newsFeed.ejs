@@ -279,7 +279,7 @@
 			if (div.scrollTop + div.clientHeight + 100 >= div.scrollHeight) {
 				$("#loaderPost").css("display", "block");
 				var skipNumber = parseInt($("#scrollValue").val());
-				
+				$("#scrollValue").val(skipNumber + 10);
 				fetch("/newsFeed/nextPost", {
 					method: "POST",
 					body: JSON.stringify({ skipNumber: skipNumber }),
@@ -291,7 +291,6 @@
 				.then((res) => res.json())
 				.then((resp) => {
 					const status = resp.status;
-					$("#scrollValue").val(skipNumber + 10);
 					switch (status) {
 						case 1:
 							let postData = resp.feedData;
@@ -400,8 +399,8 @@
 											</div>
 										</div>
 									</div>`;
-								});
-								
+							});
+
 								$("#allPost").append(html)
 								$("#loaderPost").css("display", "none");
 								
