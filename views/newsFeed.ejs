@@ -291,6 +291,7 @@
 				.then((res) => res.json())
 				.then((resp) => {
 					const status = resp.status;
+					$("#scrollValue").val(skipNumber + 10);
 					switch (status) {
 						case 1:
 							let postData = resp.feedData;
@@ -399,8 +400,8 @@
 											</div>
 										</div>
 									</div>`;
-							});
-								$("#scrollValue").val(skipNumber + 10);
+								});
+								
 								$("#allPost").append(html)
 								$("#loaderPost").css("display", "none");
 								
