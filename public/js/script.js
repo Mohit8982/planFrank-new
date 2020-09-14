@@ -279,100 +279,42 @@ $(".user-info").on("click", function(){$("#users").hide();
     });
 });
 
-    function initilize(){
-        $('.profiles-slider').slick({
-                slidesToShow: 3,
-                slck:true,
+function initilize(){
+    $('.profiles-slider').slick({
+            slidesToShow: 3,
+            slck:true,
+            slidesToScroll: 1,
+            prevArrow:'<span class="slick-previous"></span>',
+            nextArrow:'<span class="slick-nexti"></span>',
+            autoplay: true,
+            dots: false,
+            autoplaySpeed: 2000,
+            responsive: [
+            {
+            breakpoint: 1200,
+            settings: {
+                slidesToShow: 2,
                 slidesToScroll: 1,
-                prevArrow:'<span class="slick-previous"></span>',
-                nextArrow:'<span class="slick-nexti"></span>',
-                autoplay: true,
-                dots: false,
-                autoplaySpeed: 2000,
-                responsive: [
-                {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: false
-                }
-                },
-                {
-                breakpoint: 991,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-                },
-                {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-                }
-            ]
-            });
-    }
-
-   function likePost(postId, count){
-    let totalCount = parseInt(count) + 1;
-    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-    $.ajax({
-        type: "post",
-        url: "/newsFeed/likeUnlike",
-        data :{type : 1, postId : postId},
-        success: function (response) {
-            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-        },
-        error: function (e) {
-            alert("Contact Support Partner: " + JSON.stringify(e));
-        }
-    });
-}
-
-function unlikePost(postId, count){
-    let totalCount = parseInt(count) - 1;
-    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-    $.ajax({
-        type: "post",
-        url: "/newsFeed/likeUnlike",
-        data :{type : 2, postId : postId},
-        success: function (response) {
-            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-        },
-        error: function (e) {
-            alert("Contact Support Partner: " + JSON.stringify(e));
-        }
-    });
-}
-
-function tempUnlikePost(postId, count){
-    let totalCount = parseInt(count) - 1;
-    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-}
-
-function tempLike(postId, count){
-    let totalCount = parseInt(count) + 1;
-    $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
-}
-
-function loadComment(postId){
-    $(`#${postId}box`).css("display", "block");
-    $(`#${postId}list`).css("display", "block");
-    // $.ajax({
-    // 	type: "post",
-    // 	url: "/newsFeed/comments",
-    // 	data :{postId : postId},
-    // 	success: function (response) {
-
-    // 	},
-    // 	error: function (e) {
-    // 		alert("Contact Support Partner: " + JSON.stringify(e));
-    // 	}
-    // });
+                infinite: true,
+                dots: false
+            }
+            },
+            {
+            breakpoint: 991,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+            },
+            {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+            }
+        ]
+        });
 }
 
 function getpinPost(){

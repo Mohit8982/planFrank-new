@@ -3,6 +3,7 @@ const createPost = require("../model/Post");
 const user = require("../model/User");
 const pinned = require("../model/Pinned_Post");
 const Interest = require("../model/Plan_category");
+const comments = require("../model/Parrent_Comment");
 const fetch = require("node-fetch");
 const moment = require("moment");
 const session = require('../helper/session');
@@ -132,6 +133,7 @@ router.post('/trendingPlan', session, async (req, res)=>{
         const todayDate = moment().format('DD/MM/YYYY')
         const timStamp = moment(todayDate,'DD/MM/YYYY').unix();
         const trendingPost = await createPost.find({ timeStamp : { $gte : timStamp } }).populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
+
         res.json({
             status : 1,
             message : "Trending Post Link",
@@ -236,6 +238,9 @@ router.post("/nextPost", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
         const skipValue = req.body.skipNumber;
+
+        console.log(skipValue)
+
         const findInterest = await createPost
                             .find()
                             .populate('postedBy', {name : 1, username : 1})
@@ -258,6 +263,71 @@ router.post("/nextPost", session, async (req, res)=>{
         res.json({
             status : 0,
             message :`Server Error : ${error.toString()}`
+        })
+    }
+});
+
+router.post("/postComment", session, async(req, res)=>{
+    try {
+        const userInfo = req.session.details;
+        const userid = userInfo.userId;
+        const {postId, comment} = req.body;
+        const time = moment().format('hh:mm a');
+        const date = moment().format('DD/MM/YYYY');
+        const timeStamp = moment().unix();
+        const cmntData = new comments({
+            post_id : postId,
+            commentDetail: comment,
+            commentee_id: userid,
+            commentTime: time,
+            commentDate: date,
+            timeStamp: timeStamp,
+            commentLikes : 0
+        })
+
+        const saveCommnet = await cmntData.save();
+
+        const postUpdate = await createPost.findOneAndUpdate({_id: postId},{
+            $inc : {
+                commentCount : 1
+            }
+        },{returnOrignal : true,});
+
+        // console.log(postUpdate)
+
+        const data = {
+            postId : postId,
+            cmnt  : saveCommnet
+        }
+
+        const io = req.io;
+        io.emit("newComment", data);
+        res.json({
+            status : 1,
+            message : "Comment Successfully Submited"
+        })
+    } catch (error) {
+        res.json({
+            status : 0,
+            message  :  `Server Error : ${error.toString()}`
+        })
+    }
+});
+
+router.post("/getComment", session, async(req, res)=>{
+    try {
+        const {postId} = req.body;
+        const list = await comments.find({post_id : postId}).populate('commentee_id', {'username' : 1}).sort({_id : -1});
+        return res.json({
+            status : 1,
+            message : "okay",
+            data : list
+        })
+    } catch (error) {
+
+        res.json({
+            status : 0,
+            message  :  `Server Error : ${error.toString()}`
         })
     }
 });

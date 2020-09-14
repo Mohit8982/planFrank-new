@@ -65,61 +65,57 @@
 										</div>
 										<div class="comment-section">
 											<ul class="like-com">
-												<li id="<%= feedData[index]._id %>">
-													<% if(likesArray.includes(userId)){ %>
-														<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
-															<i class="fas fa-heart active"></i> 
-															<small id="likesCounter"> 
-																<%=  feedData[index].likesCount %> likes
-															</small>
-														</a>
-													<% }else{ %>
-														<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
-															<i class="fas fa-heart active"></i> 
-															<small id="likesCounter"> 
-																<%=  feedData[index].likesCount %> likes
-															</small>
-														</a>
-													<% } %>
+												<li>
+													<div id="<%= feedData[index]._id %>cmnt">
+														<% if(likesArray.includes(userId)){ %>
+															<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
+																<i class="fas fa-heart active"></i> 
+																<small id="likesCounter"> 
+																	<%=  feedData[index].likesCount %> likes
+																</small>
+															</a>
+														<% }else{ %>
+															<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
+																<i class="fas fa-heart active"></i> 
+																<small id="likesCounter"> 
+																	<%=  feedData[index].likesCount %> likes
+																</small>
+															</a>
+														<% } %>
+													</div>
 												</li>
 												<li>
-													<a href="javascript:void(0);" onclick="loadComment('<%= feedData[index]._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  feedData[index].commentCount %> comments</a>
+													<a href="javascript:void(0);" onclick="loadComment('<%= feedData[index]._id %>')" class="com likedColor" id="<%= feedData[index]._id %>comment"><i class="fas fa-comment-alt"></i>&nbsp;<%=  feedData[index].commentCount %> comments</a>
 												</li>
 											</ul>
-											<div class="comment-sec" id="<%= feedData[index]._id %>list" style="display: none;">
-												<ul>
+											<div class="comment-sec" style="display: none;" id="<%= feedData[index]._id %>disp">
+												<ul id="<%= feedData[index]._id %>loding" style="display: none;">
 													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img1.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, </p>
-																<a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
+														<div class="loader-box text-center">
+															<div class="spinner-box">
+																<svg class="spinner-container" viewBox="0 0 44 44">
+																	<circle
+																		class="path"
+																		cx="22"
+																		cy="22"
+																		r="20"
+																		fill="none"
+																		stroke-width="4"
+																	></circle>
+																</svg>
 															</div>
 														</div>
 													</li>
-													<li>
-														<div class="comment-list">
-															<div class="bg-img">
-																<img src="images/resources/bg-img3.png" alt="">
-															</div>
-															<div class="comment">
-																<h3>John Doe</h3>
-																<span><img src="images/clock.png" alt=""> 3 min ago</span>
-																<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-																<a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
-															</div>
-														</div><!--comment-list end-->
-													</li>
+												</ul>
+												<ul id="<%= feedData[index]._id %>list">
+													
 												</ul>
 											</div>
 											<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
 												<div class="comment_box">
-													<form>
-														<input type="text" placeholder="Post a comment">
+													<form id="commentSubmit" action="/newsFeed/postComment" method="POST">
+														<input type="text" name="comment" placeholder="Post a comment" required>
+														<input type="hidden" value="<%= feedData[index]._id %>" name="postId">
 														<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
 													</form>
 												</div>
@@ -283,6 +279,7 @@
 			if (div.scrollTop + div.clientHeight + 100 >= div.scrollHeight) {
 				$("#loaderPost").css("display", "block");
 				var skipNumber = parseInt($("#scrollValue").val());
+				$("#scrollValue").val(skipNumber + 10);
 				fetch("/newsFeed/nextPost", {
 					method: "POST",
 					body: JSON.stringify({ skipNumber: skipNumber }),
@@ -359,33 +356,54 @@
 										</div>
 										<div class="comment-section">
 											<ul class="like-com">
-												<li id="${ e._id }">
-													${likeDiv}
+												<li>
+													<div id="${ e._id }cmnt">
+														${likeDiv}
+													</div>
 												</li>
 												<li>
 													<a href="javascript:void(0);" onclick="loadComment('${ e._id }')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;${  e.commentCount } comments</a>
 												</li>
 											</ul>
-											<div class="comment-sec" id="${ e._id }list" style="display: none;">
+											<div class="comment-sec" id="${ e._id }disp" style="display: none;">
+												<ul id="${ e._id }loding" style="display: none;">
+													<li>
+														<div class="loader-box text-center">
+															<div class="spinner-box">
+																<svg class="spinner-container" viewBox="0 0 44 44">
+																	<circle
+																		class="path"
+																		cx="22"
+																		cy="22"
+																		r="20"
+																		fill="none"
+																		stroke-width="4"
+																	></circle>
+																</svg>
+															</div>
+														</div>
+													</li>
+												</ul>
+												<ul id="${ e._id }list">
+													
+												</ul>
 											</div>
 											<div class="post-comment" id="${ e._id }box" style="display: none;">
 												<div class="comment_box">
-													<form>
-														<input type="text" placeholder="Post a comment">
+													<form id="commentSubmit" action="/newsFeed/postComment" method="POST">
+														<input type="text" name="comment" placeholder="Post a comment">
+														<input type="hidden" value="${ e._id }" name="postId">
 														<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
 													</form>
 												</div>
 											</div>
 										</div>
 									</div>`;
-
-									// console.log(html)
-
 							});
 
 								$("#allPost").append(html)
 								$("#loaderPost").css("display", "none");
-								$("#scrollValue").val(skipNumber + 10);
+								
 							}
 							else{
 								$("#noDataBlock").css("display","block")
@@ -401,4 +419,101 @@
 				});
 			}
 		});
+
+		$('#commentSubmit').submit(function() {
+			$(this).ajaxSubmit({
+				error: function(xhr) {
+					status('Error: ' + xhr.status);
+				},
+				success: function(response) {
+					$("#commentSubmit").trigger("reset");
+				}
+			});
+			return false;
+		});
+
+		function loadComment(postId){
+			$(`#${postId}box`).css("display", "block");
+			$(`#${postId}disp`).css("display", "block");
+			$(`#${postId}loding`).css("display", "block");
+			
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/getComment",
+				data :{postId : postId},
+				success: function (response) {
+					$(`#${postId}loding`).css("display", "none");
+					let data = response.data;
+					let cmnts = '';
+					data.forEach(element => {
+						cmnts += `<li>
+							<div class="comment-list">
+								<div class="comment">
+									<img src="/logoSmall.png" style="padding: 0px 10px 0px 0px;border-radius:100px" height='40' alt="userImg">
+									<h3>${element.commentee_id.username}</h3>
+									<span><img src="images/clock.png" alt="">${element.commentDate}, ${element.commentTime}</span>
+									<p style="padding: 0px 0px 0px 55px;">${element.commentDetail}</p>
+								</div>
+							</div>
+						</li>`
+					});
+					$(`#${postId}list`).html(cmnts)
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+
+
+		function likePost(postId, count){
+			console.log(postId);
+			let totalCount = parseInt(count) + 1;
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 1, postId : postId},
+				success: function (response) {
+					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+
+		function unlikePost(postId, count){
+			console.log(postId);
+			let totalCount = parseInt(count) - 1;
+			console.log(totalCount);
+
+			let htmlData = `<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`
+
+			console.log(htmlData)
+
+			$(`#${postId}cmnt`).html(htmlData);
+			$.ajax({
+				type: "post",
+				url: "/newsFeed/likeUnlike",
+				data :{type : 2, postId : postId},
+				success: function (response) {
+					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+				},
+				error: function (e) {
+					alert("Contact Support Partner: " + JSON.stringify(e));
+				}
+			});
+		}
+
+		function tempUnlikePost(postId, count){
+			let totalCount = parseInt(count) - 1;
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+		}
+
+		function tempLike(postId, count){
+			let totalCount = parseInt(count) + 1;
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+		}
+
 </script>

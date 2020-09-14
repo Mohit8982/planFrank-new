@@ -1684,7 +1684,7 @@ main {
 }
 .comment-list {
 	display: table;
-	padding-bottom: 30px;
+	/* padding-bottom: 30px; */
 }
 .bg-img {
 	display: table-cell;
@@ -1699,6 +1699,7 @@ main {
 .comment {
 	display: table-cell;
 	vertical-align: top;
+	min-width: 300px;
 	width: 100%;
 	padding-left: 10px;
 }
@@ -1715,7 +1716,7 @@ main {
 }
 .comment span {
 	color: #b2b2b2;
-	font-size: 14px;
+	font-size: 12px;
 	display: block;
 	margin-bottom: 14px;
 }

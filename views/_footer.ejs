@@ -7,8 +7,6 @@
 <script type="text/javascript" src="/js/scrollbar.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
 <script type="text/javascript" src="/js/script.js"></script>
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script>
     var socket = io();
@@ -16,9 +14,13 @@
         socket.on('newPlan', function (data) {
             $(".bottom-160").css('display','block')
         });
+
+        socket.on('newComment', function (data) {
+            console.log(data)
+        });
     })();
 
-    $(document).ready(function() 
+    $(document).ready(function()
     {
         $.ajax({
             type: "post",
