@@ -325,12 +325,12 @@ function getpinPost(){
             let postData = response.data;
             let html = ''
             postData.forEach(element => {
-                html += `<div class="suggestion-usd">
+                html += `<a href="/plan/singlePlan/${element.post_id._id}"><div class="suggestion-usd">
                     <div class="sgt-text">
                         <h4>${element.post_id.title}</h4>
                         <span>${element.post_id.postedFrom}</span>
                     </div>
-                </div>`
+                </div></a>`
             });
             html += `<div class="view-more"><a href="#" title="">View More</a></div>`
             $("#pinnedPostDiv").html(html);
@@ -350,12 +350,12 @@ function pinPost(postId, timeStamp){
             console.log(response)
             $(`#unPin${postId}`).remove()
             let postData = response.data;
-            $("#pinnedPostDiv").prepend(`<div class="suggestion-usd">
+            $("#pinnedPostDiv").prepend(`<a href="/plan/singlePlan/${postId}"><div class="suggestion-usd">
                 <div class="sgt-text">
                     <h4>${postData.title}</h4>
                     <span>${postData.postedFrom}</span>
                 </div>
-            </div>`);
+            </div></a>`);
         },
         error: function (e) {
             alert("Contact Support Partner: " + JSON.stringify(e));

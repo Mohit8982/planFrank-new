@@ -71,14 +71,14 @@
 															<a href="javascript:void(0);" onclick="unlikePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com likedColor <%= feedData[index]._id %>">
 																<i class="fas fa-heart active"></i> 
 																<small id="likesCounter"> 
-																	<%=  feedData[index].likesCount %> likes
+																	<%=  feedData[index].likesCount %> Interested
 																</small>
 															</a>
 														<% }else{ %>
 															<a href="javascript:void(0);" onclick="likePost('<%= feedData[index]._id %>', '<%=  feedData[index].likesCount %>')"  class="com <%= feedData[index]._id %>">
 																<i class="fas fa-heart active"></i> 
 																<small id="likesCounter"> 
-																	<%=  feedData[index].likesCount %> likes
+																	<%=  feedData[index].likesCount %> Interested
 																</small>
 															</a>
 														<% } %>
@@ -114,7 +114,7 @@
 											<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
 												<div class="comment_box">
 													<input type="text" name="<%= feedData[index]._id %>cmntData" id="<%= feedData[index]._id %>cmntData" placeholder="Post a comment" required>
-													<button onclick="submitComment('<%= feedData[index]._id %>')" type="button" id="btnSubmit" style="color: #ff546a;background-color: #ffff;">Post</button>
+													<button onclick="submitComment('<%= feedData[index]._id %>')" type="button" id="btnSubmit">Post</button>
 												</div>
 											</div>
 										</div>
@@ -388,11 +388,8 @@
 											</div>
 											<div class="post-comment" id="${ e._id }box" style="display: none;">
 												<div class="comment_box">
-													<form id="commentSubmit" action="/newsFeed/postComment" method="POST">
-														<input type="text" name="comment" placeholder="Post a comment">
-														<input type="hidden" value="${ e._id }" name="postId">
-														<button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
-													</form>
+													<input type="text" name="${ e._id }cmntData" id="${ e._id }cmntData" placeholder="Post a comment" required>
+													<button onclick="submitComment('${ e._id }')" type="button" id="btnSubmit">Post</button>
 												</div>
 											</div>
 										</div>
@@ -473,13 +470,13 @@
 
 		function likePost(postId, count){
 			let totalCount = parseInt(count) + 1;
-			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
 			$.ajax({
 				type: "post",
 				url: "/newsFeed/likeUnlike",
 				data :{type : 1, postId : postId},
 				success: function (response) {
-					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
 				},
 				error: function (e) {
 					alert("Contact Support Partner: " + JSON.stringify(e));
@@ -488,21 +485,15 @@
 		}
 
 		function unlikePost(postId, count){
-			console.log(postId);
 			let totalCount = parseInt(count) - 1;
-			console.log(totalCount);
-
-			let htmlData = `<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`
-
-			console.log(htmlData)
-
+			let htmlData = `<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested</a>`
 			$(`#${postId}cmnt`).html(htmlData);
 			$.ajax({
 				type: "post",
 				url: "/newsFeed/likeUnlike",
 				data :{type : 2, postId : postId},
 				success: function (response) {
-					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+					$(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
 				},
 				error: function (e) {
 					alert("Contact Support Partner: " + JSON.stringify(e));
@@ -512,12 +503,12 @@
 
 		function tempUnlikePost(postId, count){
 			let totalCount = parseInt(count) - 1;
-			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested/a>`);
 		}
 
 		function tempLike(postId, count){
 			let totalCount = parseInt(count) + 1;
-			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
+			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
 		}
 
 </script>

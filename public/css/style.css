@@ -1781,6 +1781,15 @@ main {
 	font-weight: 600;
 }
 
+#btnSubmit{
+	color: #ff546a;
+	background-color: #ffff;
+}
+
+#btnSubmit:focus {
+	border: none;
+}
+
 .commentPadd{
 	padding: 15px 0px 0px 0px;
 }
