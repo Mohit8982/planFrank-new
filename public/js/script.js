@@ -33,8 +33,6 @@ $(window).on("load", function() {
         return false;
     });
 
-
-
     //  ============= POST PROJECT POPUP FUNCTION =========
 
     $(".post_project").on("click", function(){
@@ -362,3 +360,18 @@ function pinPost(postId, timeStamp){
         }
     });
 }
+
+function getpinPost(){
+    $.ajax({
+        type: "get",
+        url: "https://api.ipify.org/?format=json",
+        success: function (response) {
+            const ip = response.ip;
+            $("#ipAddress").val(ip)
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+

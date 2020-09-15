@@ -27,16 +27,16 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const userInfo = req.session.details;
         const userId = userInfo.userId;
         const totalPost = userInfo.totalPost;
-        const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description} = req.body;
+        const {title, planTimeStart, planTimeEnd, planDate, planLocation, planCategory, description, ipAddress} = req.body;
         const todayDate = moment().format('YYYY-MM-DD');
         const checkDate = moment(planDate).isBefore(todayDate);
         const timeStart = moment(planTimeStart, "hh:mm").format("hh:mm a");
         const timeEnd = moment(planTimeEnd, "hh:mm").format("hh:mm a");
         if(checkDate == false)
         {
-            let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
+            // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             let postedFrom = 'Location Not Available';
-            const link = `http://api.ipstack.com/${ip}?access_key=4c05f981aab9be3bd0989f09987ce041`;
+            const link = `http://api.ipstack.com/${ipAddress}?access_key=4c05f981aab9be3bd0989f09987ce041`;
             const locality =  await getLocation(link);
             city = locality.city; 
             state = locality.region_name;
