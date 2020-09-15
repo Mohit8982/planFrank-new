@@ -35,6 +35,8 @@ $(window).on("load", function() {
 
     //  ============= POST PROJECT POPUP FUNCTION =========
 
+    getip();
+    getpinPost();
     $(".post_project").on("click", function(){
         $(".post-popup.pst-pj").addClass("active");
         $(".wrapper").addClass("overlay");
@@ -361,7 +363,7 @@ function pinPost(postId, timeStamp){
     });
 }
 
-function getpinPost(){
+function getip(){
     $.ajax({
         type: "get",
         url: "https://api.ipify.org/?format=json",
