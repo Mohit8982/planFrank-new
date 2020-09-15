@@ -53,14 +53,14 @@
                                                         <a href="javascript:void(0);" onclick="unlikePost('<%= postData._id %>', '<%=  postData.likesCount %>')"  class="com likedColor <%= postData._id %>">
                                                             <i class="fas fa-heart active"></i> 
                                                             <small id="likesCounter"> 
-                                                                <%=  postData.likesCount %> likes
+                                                                <%=  postData.likesCount %> Interested
                                                             </small>
                                                         </a>
                                                     <% }else{ %>
                                                         <a href="javascript:void(0);" onclick="likePost('<%= postData._id %>', '<%=  postData.likesCount %>')"  class="com <%= postData._id %>">
                                                             <i class="fas fa-heart active"></i> 
                                                             <small id="likesCounter"> 
-                                                                <%=  postData.likesCount %> likes
+                                                                <%=  postData.likesCount %> Interested
                                                             </small>
                                                         </a>
                                                     <% } %>
@@ -69,42 +69,33 @@
                                                     <a href="javascript:void(0);" onclick="loadComment('<%= postData._id %>')" class="com"><i class="fas fa-comment-alt"></i>&nbsp;<%=  postData.commentCount %> comments</a>
                                                 </li>
                                             </ul>
-                                            <div class="comment-sec" id="<%= postData._id %>list" style="display: none;">
-                                                <ul>
-                                                    <li>
-                                                        <div class="comment-list">
-                                                            <div class="bg-img">
-                                                                <img src="images/resources/bg-img1.png" alt="">
-                                                            </div>
-                                                            <div class="comment">
-                                                                <h3>John Doe</h3>
-                                                                <span><img src="images/clock.png" alt=""> 3 min ago</span>
-                                                                <p>Lorem ipsum dolor sit amet, </p>
-                                                                <a href="javascript:void(0);" title="" class="active"><i class="fa fa-reply-all"></i>Reply</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="comment-list">
-                                                            <div class="bg-img">
-                                                                <img src="images/resources/bg-img3.png" alt="">
-                                                            </div>
-                                                            <div class="comment">
-                                                                <h3>John Doe</h3>
-                                                                <span><img src="images/clock.png" alt=""> 3 min ago</span>
-                                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at.</p>
-                                                                <a href="javascript:void(0);" title=""><i class="fa fa-reply-all"></i>Reply</a>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                            <div class="comment-sec" style="display: none;" id="<%= postData._id %>disp">
+                                                <ul id="<%= postData._id %>loding" style="display: none;">
+													<li>
+														<div class="loader-box text-center">
+															<div class="spinner-box">
+																<svg class="spinner-container" viewBox="0 0 44 44">
+																	<circle
+																		class="path"
+																		cx="22"
+																		cy="22"
+																		r="20"
+																		fill="none"
+																		stroke-width="4"
+																	></circle>
+																</svg>
+															</div>
+														</div>
+													</li>
+												</ul>
+												<ul id="<%= postData._id %>list">
+													
+												</ul>
                                             </div>
                                             <div class="post-comment" id="<%= postData._id %>box" style="display: none;">
                                                 <div class="comment_box">
-                                                    <form>
-                                                        <input type="text" placeholder="Post a comment">
-                                                        <button type="submit" style="color: #ff546a;background-color: #ffff;">Post</button>
-                                                    </form>
+                                                    <input type="text" name="<%= postData._id %>cmntData" id="<%= postData._id %>cmntData" placeholder="Post a comment" required>
+													<button onclick="submitComment('<%= postData._id %>')" type="button" id="btnSubmit">Post</button>
                                                 </div>
                                             </div>
                                         </div>

@@ -377,3 +377,99 @@ function getip(){
     });
 }
 
+function submitComment(postId)
+{
+    const comment = $(`#${postId}cmntData`).val();
+    if(comment == ''){
+        return false;
+    }
+    $("#btnSubmit").attr("disabled", true);
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/postComment",
+        data :{postId : postId, comment : comment },
+        success: function (response) {
+            $(`#${postId}cmntData`).val('');
+            $("#btnSubmit").attr("disabled", false);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function loadComment(postId){
+    $(`#${postId}box`).css("display", "block");
+    $(`#${postId}disp`).css("display", "block");
+    $(`#${postId}loding`).css("display", "block");
+    
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/getComment",
+        data :{postId : postId},
+        success: function (response) {
+            $(`#${postId}loding`).css("display", "none");
+            let data = response.data;
+            let cmnts = '';
+            data.forEach(element => {
+                cmnts += `<li class="commentPadd">
+                    <div class="comment-list">
+                        <div class="comment">
+                            <img src="/logoSmall.png" style="padding: 0px 10px 0px 0px;border-radius:100px" height='40' alt="userImg">
+                            <h3>${element.commentee_id.name}</h3>
+                            <span><img src="images/clock.png" alt="">${element.commentDate}, ${element.commentTime}</span>
+                            <p style="padding: 0px 0px 0px 55px;">${element.commentDetail}</p>
+                        </div>
+                    </div>
+                </li>`
+            });
+            $(`#${postId}list`).html(cmnts)
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function likePost(postId, count){
+    let totalCount = parseInt(count) + 1;
+    $(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/likeUnlike",
+        data :{type : 1, postId : postId},
+        success: function (response) {
+            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="unlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function unlikePost(postId, count){
+    let totalCount = parseInt(count) - 1;
+    let htmlData = `<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested</a>`
+    $(`#${postId}cmnt`).html(htmlData);
+    $.ajax({
+        type: "post",
+        url: "/newsFeed/likeUnlike",
+        data :{type : 2, postId : postId},
+        success: function (response) {
+            $(`#${postId}`).html(`<a href="javascript:void(0);" onclick="likePost('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
+        },
+        error: function (e) {
+            alert("Contact Support Partner: " + JSON.stringify(e));
+        }
+    });
+}
+
+function tempUnlikePost(postId, count){
+    let totalCount = parseInt(count) - 1;
+    $(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempLike('${postId}', '${totalCount}')" class="com"><i class="fas fa-heart"></i> ${totalCount} Interested/a>`);
+}
+
+function tempLike(postId, count){
+    let totalCount = parseInt(count) + 1;
+    $(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} Interested</a>`);
+}

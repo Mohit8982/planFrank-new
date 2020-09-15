@@ -271,7 +271,7 @@ router.post("/postComment", session, async(req, res)=>{
     try {
         const userInfo = req.session.details;
         const userid = userInfo.userId;
-        const username = userInfo.username;
+        const username = userInfo.name;
         const {postId, comment} = req.body;
         const time = moment().format('hh:mm a');
         const date = moment().format('DD/MM/YYYY');
@@ -319,7 +319,7 @@ router.post("/postComment", session, async(req, res)=>{
 router.post("/getComment", session, async(req, res)=>{
     try {
         const {postId} = req.body;
-        const list = await comments.find({post_id : postId}).populate('commentee_id', {'username' : 1}).sort({_id : -1});
+        const list = await comments.find({post_id : postId}).populate('commentee_id', {'name' : 1}).sort({_id : -1});
         return res.json({
             status : 1,
             message : "okay",
