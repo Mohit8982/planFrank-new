@@ -114,7 +114,7 @@
 											<div class="post-comment" id="<%= feedData[index]._id %>box" style="display: none;">
 												<div class="comment_box">
 													<input type="text" name="<%= feedData[index]._id %>cmntData" id="<%= feedData[index]._id %>cmntData" placeholder="Post a comment" required>
-													<button onclick="submitComment('<%= feedData[index]._id %>')" type="button" style="color: #ff546a;background-color: #ffff;">Post</button>
+													<button onclick="submitComment('<%= feedData[index]._id %>')" type="button" id="btnSubmit" style="color: #ff546a;background-color: #ffff;">Post</button>
 												</div>
 											</div>
 										</div>
@@ -423,13 +423,14 @@
 			if(comment == ''){
 				return false;
 			}
-			
+			$("#btnSubmit").attr("disabled", true);
 			$.ajax({
 				type: "post",
 				url: "/newsFeed/postComment",
 				data :{postId : postId, comment : comment },
 				success: function (response) {
 					$(`#${postId}cmntData`).val('');
+					$("#btnSubmit").attr("disabled", false);
 				},
 				error: function (e) {
 					alert("Contact Support Partner: " + JSON.stringify(e));
@@ -451,7 +452,7 @@
 					let data = response.data;
 					let cmnts = '';
 					data.forEach(element => {
-						cmnts += `<li>
+						cmnts += `<li class="commentPadd">
 							<div class="comment-list">
 								<div class="comment">
 									<img src="/logoSmall.png" style="padding: 0px 10px 0px 0px;border-radius:100px" height='40' alt="userImg">
@@ -471,7 +472,6 @@
 		}
 
 		function likePost(postId, count){
-			console.log(postId);
 			let totalCount = parseInt(count) + 1;
 			$(`#${postId}cmnt`).html(`<a href="javascript:void(0);" onclick="tempUnlikePost('${postId}', '${totalCount}')" class="com likedColor" ><i class="fas fa-heart"></i> ${totalCount} likes</a>`);
 			$.ajax({

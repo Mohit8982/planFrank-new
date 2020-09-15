@@ -294,8 +294,6 @@ router.post("/postComment", session, async(req, res)=>{
             }
         },{returnOrignal : true,});
 
-        // console.log(postUpdate)
-
         const data = {
             postId : postId,
             commentTime : `${date}, ${time}`,
