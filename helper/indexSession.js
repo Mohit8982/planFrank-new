@@ -22,7 +22,7 @@ module.exports = function (req, res, next) {
     catch (e) {
         res.status(400).json({
             status: 0,
-            message: 'Invalid Token'
+            message: 'Invalid Token mohit'
         });
     }
 };

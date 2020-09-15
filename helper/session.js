@@ -6,30 +6,37 @@ module.exports = async function (req,res,next) {
     {
         const token = req.session.token;
         const userInfo = req.session.details;
-        const userId =  userInfo.userId;
-        const user = await checkUser.findOne({_id : userId, verified : true})
-        if(user == null){
-            res.redirect('/');
+        if(userInfo){
+            const userId =  userInfo.userId;
+            const user = await checkUser.findOne({_id : userId, verified : true})
+            if(user == null){
+                return res.redirect('/');
+            }
+            if (token == null){
+                return res.redirect('/');
+            }
+            else {
+                jwt.verify(token, process.env.jsonSecretToken, function (err, decoded) {
+                    if (err) {
+                        res.redirect('/');
+                    } 
+                    else {
+                        req.auth = decoded 
+                        next()
+                    }
+                });
+            }
         }
-        if (token == null){
+        else{
             return res.redirect('/');
         }
-        else {
-            jwt.verify(token, process.env.jsonSecretToken, function (err, decoded) {
-                if (err) {
-                    res.redirect('/');
-                } 
-                else {
-                    req.auth = decoded 
-                    next()
-                }
-            });
-        }
+        
     }
     catch (e) {
+        console.log(e)
         res.status(400).json({
             status: 0,
-            message: 'Invalid Token'
+            message: 'Invalid Token mohit'
         });
     }
 };

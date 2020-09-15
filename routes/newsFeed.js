@@ -271,6 +271,7 @@ router.post("/postComment", session, async(req, res)=>{
     try {
         const userInfo = req.session.details;
         const userid = userInfo.userId;
+        const username = userInfo.username;
         const {postId, comment} = req.body;
         const time = moment().format('hh:mm a');
         const date = moment().format('DD/MM/YYYY');
@@ -285,7 +286,7 @@ router.post("/postComment", session, async(req, res)=>{
             commentLikes : 0
         })
 
-        const saveCommnet = await cmntData.save();
+        const saveComment = await cmntData.save();
 
         const postUpdate = await createPost.findOneAndUpdate({_id: postId},{
             $inc : {
@@ -297,7 +298,10 @@ router.post("/postComment", session, async(req, res)=>{
 
         const data = {
             postId : postId,
-            cmnt  : saveCommnet
+            commentTime : `${date}, ${time}`,
+            username : username,
+            comment : comment,
+            ulId : `${postId}list`
         }
 
         const io = req.io;
