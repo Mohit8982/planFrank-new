@@ -30,4 +30,29 @@ router.get("/makePlan", session, async (req, res)=>{
     }
 });
 
+router.get("/terms&condition", session, async (req, res)=>{
+    try {
+        const userInfo = req.session.details;
+        res.render('./t&c', {title : "T&C", userInfo : userInfo})
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error ${error.toString()}`
+        })
+    }
+});
+
+router.get("/privacy", session, async (req, res)=>{
+    try {
+        const userInfo = req.session.details;
+        res.render('./privacy', {title : "Privacy Policies", userInfo : userInfo})
+    } catch (error) {
+        res.json({
+            status : 0,
+            message : `Server Error ${error.toString()}`
+        })
+    }
+});
+
+
 module.exports = router;

@@ -332,7 +332,6 @@ function getpinPost(){
                     </div>
                 </div></a>`
             });
-            html += `<div class="view-more"><a href="#" title="">View More</a></div>`
             $("#pinnedPostDiv").html(html);
         },
         error: function (e) {
