@@ -9,8 +9,8 @@ const path = require("path");
 const redis = require('redis');
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
-// let redisClient = redis.createClient(6379, 'srv-captain--redis-cache', { password: 'redisNew' });
-let redisClient = redis.createClient();
+let redisClient = redis.createClient(6379, 'srv-captain--redis-cache', { password: 'redisNew' });
+//let redisClient = redis.createClient();
 const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server,{
@@ -84,7 +84,7 @@ app.use('/auth', auth);
 app.use('/newsFeed', newsFeed);
 app.use('/plan', individual);
 
-const port = process.env.port || 3000;
+const port = process.env.port || 5000;
 server.listen(port, () => {
 	console.log(`Running on PORT ${port} `);
 });
