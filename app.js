@@ -84,7 +84,7 @@ app.use('/auth', auth);
 app.use('/newsFeed', newsFeed);
 app.use('/plan', individual);
 
-const port = process.env.port || 5000;
+const port = process.env.port || 3000;
 server.listen(port, () => {
 	console.log(`Running on PORT ${port} `);
 });
