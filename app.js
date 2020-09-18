@@ -9,15 +9,15 @@ const path = require("path");
 const redis = require('redis');
 const session = require('express-session');
 let RedisStore = require('connect-redis')(session);
-let redisClient = redis.createClient(6379, 'srv-captain--redis-cache', { password: 'redisNew' });
-//let redisClient = redis.createClient();
+//let redisClient = redis.createClient(6379, 'srv-captain--redis-cache', { password: 'redisNew' });
+let redisClient = redis.createClient();
 const http = require('http');
 const server = http.createServer(app);
 const io = require('socket.io')(server,{
 	pingTimeout: 60000,
 });
-// const redis_socket = require('socket.io-redis');
-// io.adapter(redis_socket({ host: 'localhost', port: 6379 }));
+const redis_socket = require('socket.io-redis');
+io.adapter(redis_socket({ host: 'localhost', port: 6379 }));
 
 //Connect To DB
 dotenv.config();
