@@ -41,6 +41,9 @@
                                                 <p> Timing : <%= postData.planTime %></p>
                                                 <p><%= postData.description %></p>
                                                 <p><i class="la la-map-marker"></i><%= postData.planLocation %></p>
+                                                <% if(postData.image_url){ %>
+													<img src="<%= postData.image_url %>" class="news_img">
+											    <% } %>
                                                 <ul class="skill-tags">
                                                     <li><a href="javascript:void(0);" title=""><%= postData.planCategoryname %></a></li>
                                                 </ul>

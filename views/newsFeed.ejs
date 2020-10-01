@@ -55,9 +55,12 @@
 											</div>
 											<div class="job_descp">
 												<h4 style="padding-bottom: 10px;">“<%= feedData[index].title %>”</h4>
-												<p> Timing : <%= feedData[index].planTime %></p>
+												<p> Timing : <%= feedData[index].planDate %>,   <%= feedData[index].planTime %></p>
 												<p><%= feedData[index].description %></p>
 												<p><i class="la la-map-marker"></i><%= feedData[index].planLocation %></p>
+												<% if(feedData[index].image_url){ %>
+													<img src="<%= feedData[index].image_url %>" width="100%" style="height: auto;max-height: 500px;padding-bottom: 10px;">
+											    <% } %>
 												<ul class="skill-tags">
 													<li><a href="javascript:void(0);" title=""><%= feedData[index].planCategoryname %></a></li>
 												</ul>

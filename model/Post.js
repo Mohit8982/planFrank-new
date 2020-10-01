@@ -26,9 +26,8 @@ const postSchema = new mongoose.Schema({
 		type : String,
 		required : false
 	},
-	photo: {
-		data: Buffer,
-		contenType: String,
+	image_url:{
+		type : String,
 		required : false
 	},
 	postedBy: {
@@ -58,6 +57,10 @@ const postSchema = new mongoose.Schema({
 	timeStamp:{
 		type: Number,
 		required: true
+	},
+	plantimeStamp:{
+		type: Number,
+		required: false
 	}
 });
 

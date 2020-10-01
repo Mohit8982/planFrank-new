@@ -15,7 +15,7 @@ router.get("/", session, async (req, res)=>{
         const findInterest = await createPost.find().populate('postedBy', {name : 1, username : 1}).sort({_id : -1}).limit(10);
         res.render('./newsFeed', {title : "Plan's" , userInfo : userInfo, feedData : findInterest})
     }catch(error){
-        res.json({
+        return res.json({
             status : 0,
             message :`Server Error : ${error.toString()}`
         })
@@ -32,9 +32,9 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
         const checkDate = moment(planDate).isBefore(todayDate);
         const timeStart = moment(planTimeStart, "hh:mm").format("hh:mm a");
         const timeEnd = moment(planTimeEnd, "hh:mm").format("hh:mm a");
+        const planStamp = moment(planDate,'YYYY-MM-DD').format('DD/MM/YYYY');
         if(checkDate == false)
         {
-            // let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress ||req.socket.remoteAddress || (req.connection.socket ? req.connection.socket.remoteAddress : null);
             let postedFrom = 'Location Not Available';
             const link = `http://api.ipstack.com/${ipAddress}?access_key=4c05f981aab9be3bd0989f09987ce041`;
             const locality =  await getLocation(link);
@@ -48,7 +48,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
                 title : title,
                 description: description,
                 planTime : `${timeStart} - ${timeEnd}`,
-                planDate : planDate,
+                planDate : planStamp,
                 planLocation : planLocation,
                 postedFrom : postedFrom,
                 postedBy : userId,
@@ -57,7 +57,8 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
                 commentCount: 0,
                 likesCount : 0,
                 createdAt : moment().format("DD/MM/YYYY hh:mm a"),
-                timeStamp : moment().unix()
+                timeStamp : moment().unix(),
+                plantimeStamp: moment(planStamp,'DD/MM/YYYY').unix()
             })
             const postData = await Post.save();
             await user.updateOne({_id : userId},{ $inc : { total_post : 1 } });
@@ -81,8 +82,7 @@ router.post("/createPlan", session, createPlan(), validate, async(req, res)=>{
             })
         }
     } catch (error) {
-        console.log(error)
-        res.json({
+        return res.json({
             status : 0,
             message :`Server Error : ${error.toString()}`
         })
@@ -100,12 +100,12 @@ router.post('/createInterest', async(req, res)=>{
             createdBy : userid
         })
         await category.save()
-        res.json({
+        return res.json({
             status : 1,
             message : "Created Successfully..."
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : error.toString()
         })
@@ -115,13 +115,13 @@ router.post('/createInterest', async(req, res)=>{
 router.post('/InterestList', session, async(req, res)=>{
     try {
         const list  = await Interest.find();
-        res.json({
+        return res.json({
             status : 1,
             message : "Created Successfully...",
             data : list
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : error.toString()
         })
@@ -132,15 +132,15 @@ router.post('/trendingPlan', session, async (req, res)=>{
     try {
         const todayDate = moment().format('DD/MM/YYYY')
         const timStamp = moment(todayDate,'DD/MM/YYYY').unix();
-        const trendingPost = await createPost.find({ timeStamp : { $gte : timStamp } }).populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
+        const trendingPost = await createPost.find({ plantimeStamp : { $gte : timStamp } }).populate('postedBy', {name : 1, username : 1}).sort({likesCount: -1, commentCount : -1}).limit(10);
 
-        res.json({
+        return res.json({
             status : 1,
             message : "Trending Post Link",
             data : trendingPost
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : `Server Error : ${error.toString()}`
         })
@@ -165,12 +165,12 @@ router.post('/likeUnlike', session, async (req, res)=>{
         
         const trendingPost = await createPost.updateOne({_id : postId}, query);
 
-        res.json({
+        return res.json({
             status : 1,
             message : trendingPost
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : `Server Error : ${error.toString()}`
         })
@@ -202,13 +202,13 @@ router.post('/pinPost', session, async (req, res)=>{
             upsert: true,
         })
 
-        res.json({
+        return res.json({
             status : 1,
             message : "Plan Pinned Successfully",
             data : post
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : `Server Error : ${error.toString()}`
         })
@@ -221,13 +221,13 @@ router.post('/getPinPost', session, async (req, res)=>{
         const userId = userInfo.userId
         const post = await pinned.find({user_id : userId}).populate('post_id', {title : 1, postedFrom : 1}).sort({_id: -1}).limit(5);
         
-        res.json({
+        return res.json({
             status : 1,
             message : "Pinned Post List",
             data : post
         })
     } catch (error) {
-        res.json({
+        return res.json({
             status : 0,
             message : `Server Error : ${error.toString()}`
         })
@@ -238,9 +238,6 @@ router.post("/nextPost", session, async (req, res)=>{
     try {
         const userInfo = req.session.details;
         const skipValue = req.body.skipNumber;
-
-        console.log(skipValue)
-
         const findInterest = await createPost
                             .find()
                             .populate('postedBy', {name : 1, username : 1})
@@ -248,19 +245,19 @@ router.post("/nextPost", session, async (req, res)=>{
                             .skip(skipValue)
                             .limit(10);
         if(findInterest){
-            res.json({
+            return res.json({
                 status : 1,
                 message :"ok",
                 feedData : findInterest
             })
         }else{
-            res.json({
+            return res.json({
                 status : 2,
                 message :"No More Plan Available"
             })
         }
     }catch(error){
-        res.json({
+        return res.json({
             status : 0,
             message :`Server Error : ${error.toString()}`
         })

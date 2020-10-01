@@ -7022,3 +7022,11 @@ ul#myTab {
 		stroke-dashoffset: -124; /* -99% circumference */
 	}
 }
+
+.news_img{
+	width:70%;
+	height: auto;
+	max-height: 550px;
+	margin-left: 15%;
+	padding-bottom: 10px;
+}
