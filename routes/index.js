@@ -15,16 +15,9 @@ router.get("/", indexSession, async (req, res)=>{
 
 router.get('/logout', session, async (req, res) => {
     try {
-        const userInfo = req.session.details;
-        if(userInfo.role === 3 || userInfo.role === 4){
-            req.session.destroy(function (err) {
-                res.redirect('/subadminLogin');
-            })
-        }else{
-            req.session.destroy(function (err) {
-                res.redirect('/');
-            })
-        }
+        req.session.destroy(function (err) {
+            res.redirect('/');
+        })
     } catch (e) {
         res.json({ status: 0, message: e.toString() });
     }
